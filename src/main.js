@@ -10,7 +10,6 @@ function createWindow() {
   const win = new BrowserWindow({
     width: WIDTH,
     height: HEIGHT,
-    icon: 'src/icong.png',
     show: false,
     alwaysOnTop: true,
     fullscreenable: false,
