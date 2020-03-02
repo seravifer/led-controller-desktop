@@ -24,7 +24,6 @@ function createWindow() {
   win.loadFile('src/index.html');
   // win.webContents.openDevTools();
 
-
   const position = calculateWindowPosition();
   win.setBounds({
     x: position.x,
@@ -52,7 +51,8 @@ function createWindow() {
       event.preventDefault();
       win.hide();
     } else {
-      tray.destroy()
+      tray.destroy();
+      port.write(JSON.stringify({ r: 0, g: 0, b: 0 }) + '\n');
     }
   });
 
@@ -68,20 +68,7 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(createWindow)
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-})
-
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
-  }
-})
-
+app.whenReady().then(createWindow);
 
 port.on("open", () => {
   console.log('Open port!');
@@ -90,14 +77,12 @@ port.on("open", () => {
 ipcMain.on('value', (event, rgb) => {
   console.log(rgb)
   port.write(JSON.stringify(rgb) + '\n');
-})
+});
 
 
 function calculateWindowPosition() {
   const screenBounds = screen.getPrimaryDisplay().size;
-
   const x = screenBounds.width - WIDTH;
   const y = screenBounds.height - HEIGHT - 40; // Windows 10 taskbar size
-
-  return { x: x, y: y };
+  return { x, y };
 }

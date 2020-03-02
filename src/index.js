@@ -17,11 +17,12 @@ if (!window.localStorage.getItem('switch')) {
 
 colorPicker.color.rgb = JSON.parse(window.localStorage.getItem('value'));
 switchButton.checked = window.localStorage.getItem('switch') == 'on' ? true : false;
+
 if (switchButton.checked) {
-  setTimeout(() => ipcRenderer.send('value', colorPicker.color.rgb), 2000);
+  setTimeout(() => ipcRenderer.send('value', colorPicker.color.rgb), 2000); // FIXME: wait for ready
 }
  
-colorPicker.on('input:change', throttled(200, (color) => {
+colorPicker.on('input:change', throttled(100, (color) => {
   if (!switchButton.checked) return;
   ipcRenderer.send('value', color.rgb);
   window.localStorage.setItem('value', JSON.stringify(colorPicker.color.rgb))
@@ -43,9 +44,7 @@ function throttled(delay, fn) {
   let lastCall = 0;
   return function (...args) {
     const now = (new Date).getTime();
-    if (now - lastCall < delay) {
-      return;
-    }
+    if (now - lastCall < delay) return;
     lastCall = now;
     return fn(...args);
   }
