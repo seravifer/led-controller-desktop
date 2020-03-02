@@ -1,0 +1,20 @@
+{
+  "name": "led-strip-controller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "rebuild": "electron-rebuild"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^8.0.2",
+    "electron-rebuild": "^1.10.0"
+  },
+  "dependencies": {
+    "@jaames/iro": "^5.1.5",
+    "serialport": "^8.0.7"
+  }
+}
