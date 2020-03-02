@@ -22,7 +22,7 @@ function createWindow() {
   })
 
   win.loadFile('src/index.html');
-  // win.webContents.openDevTools();
+  win.webContents.openDevTools({ mode: 'undocked' });
 
   const position = calculateWindowPosition();
   win.setBounds({
@@ -30,7 +30,7 @@ function createWindow() {
     y: position.y
   });
 
-  const tray = new Tray("src/icon.png");
+  const tray = new Tray("assets/icon.png");
   let contextMenu = Menu.buildFromTemplate([
     {
       label: 'Quit',
