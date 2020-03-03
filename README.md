@@ -19,6 +19,9 @@
 <p align="center">
   <img src="assets/screenshot.png" alt="Screenshot">
 </p>
+<p align="center">
+  <img src="assets/schema.png" alt="Screenshot">
+</p>
 
 ## Getting Started
 ### Installation
