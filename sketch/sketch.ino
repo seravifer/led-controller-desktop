@@ -19,17 +19,14 @@ void setup() {
   Serial.begin(19200);
 }
 
-void loop() { read(); }
-
-void read() {
-  while (Serial.available() > 0) {
+void loop() {
+  if (Serial.available()) {
     dataReceived = Serial.readStringUntil('\n');
     deserializeJson(json, dataReceived);
-    gBright = json["g"];
     rBright = json["r"];
+    gBright = json["g"];
     bBright = json["b"];
     updateColor();
-    dataReceived = "";
     // serializeJson(json, Serial);
   }
 }

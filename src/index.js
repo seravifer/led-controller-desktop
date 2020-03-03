@@ -19,17 +19,15 @@ colorPicker.color.rgb = JSON.parse(window.localStorage.getItem('value'));
 switchButton.checked = window.localStorage.getItem('switch') == 'on' ? true : false;
 
 if (switchButton.checked) {
-  console.log('checked')
-  ipcRenderer.on('open-port', ()  => {
-    console.log('open')
+  ipcRenderer.on('open-port', () => {
     ipcRenderer.send('value', colorPicker.color.rgb);
   });
 }
- 
+
 colorPicker.on('input:change', throttled(100, (color) => {
   if (!switchButton.checked) return;
   ipcRenderer.send('value', color.rgb);
-  window.localStorage.setItem('value', JSON.stringify(colorPicker.color.rgb))
+  window.localStorage.setItem('value', JSON.stringify(colorPicker.color.rgb));
 }));
 
 switchButton.value = false;
@@ -44,6 +42,9 @@ switchButton.addEventListener('change', () => {
 })
 
 
+/**
+ * Helpers
+ */
 function throttled(delay, fn) {
   let lastCall = 0;
   return function (...args) {

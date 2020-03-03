@@ -31,7 +31,7 @@ function createWindow() {
   });
 
   const tray = new Tray("assets/icon.png");
-  let contextMenu = Menu.buildFromTemplate([
+  const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Quit',
       click: () => {
@@ -42,19 +42,7 @@ function createWindow() {
   ])
 
   tray.setContextMenu(contextMenu)
-  tray.on("click", () => {
-    win.show();
-  });
-
-  win.on('close', (event) => {
-    if (!app.isQuiting) {
-      event.preventDefault();
-      win.hide();
-    } else {
-      tray.destroy();
-      port.write(JSON.stringify({ r: 0, g: 0, b: 0 }) + '\n');
-    }
-  });
+  tray.on("click", () => win.show());
 
   win.on("blur", () => {
     if (!win.webContents.isDevToolsOpened()) {
@@ -93,12 +81,23 @@ function createWindow() {
       port.write(JSON.stringify(rgb) + '\n');
     });
 
-    const job = new CronJob('0 20-23 1/1 * *', () => {
+    new CronJob('0 20-23 1/1 * *', () => {
       if (timeIsBetween('20:00', '23:00')) {
         console.log('Cron running!');
         win.webContents.send('turn-on');
       }
     }, null, true, 'Europe/Madrid', null, true);
+
+    win.on('close', (event) => {
+      if (!app.isQuiting) {
+        event.preventDefault();
+        win.hide();
+      } else {
+        tray.destroy();
+        port.write(JSON.stringify({ r: 0, g: 0, b: 0 }) + '\n');
+      }
+    });
+
   })
 }
 

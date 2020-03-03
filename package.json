@@ -5,13 +5,15 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
+    "lint": " npx eslint src/",
     "rebuild": "electron-rebuild"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "electron": "^8.0.2",
-    "electron-rebuild": "^1.10.0"
+    "electron-rebuild": "^1.10.0",
+    "eslint": "^6.8.0"
   },
   "dependencies": {
     "@jaames/iro": "^5.1.5",
