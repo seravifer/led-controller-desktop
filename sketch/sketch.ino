@@ -12,36 +12,26 @@ String dataReceived;
 DynamicJsonDocument json(32);
 
 void setup() {
-  Serial.begin(9600);
   pinMode(GREEN_LED, OUTPUT);
   pinMode(RED_LED, OUTPUT);
   pinMode(BLUE_LED, OUTPUT);
   updateColor();
+  Serial.begin(19200);
 }
 
-void loop() {
-  read();
-}
+void loop() { read(); }
 
 void read() {
-    char endMarker = '\n';
-    char c;
-
-    while (Serial.available() > 0) {
-        c = Serial.read();
-
-        if (c != endMarker) {
-            dataReceived += c;
-        } else {
-            deserializeJson(json, dataReceived);
-            gBright = json["g"];
-            rBright = json["r"];
-            bBright = json["b"];
-            updateColor();
-            dataReceived = "";
-            // serializeJson(json, Serial);
-        }
-    }
+  while (Serial.available() > 0) {
+    dataReceived = Serial.readStringUntil('\n');
+    deserializeJson(json, dataReceived);
+    gBright = json["g"];
+    rBright = json["r"];
+    bBright = json["b"];
+    updateColor();
+    dataReceived = "";
+    // serializeJson(json, Serial);
+  }
 }
 
 void updateColor() {

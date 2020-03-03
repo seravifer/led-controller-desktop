@@ -1,7 +1,6 @@
-const { app, BrowserWindow, ipcMain, Tray, Menu, screen } = require('electron')
+const { app, BrowserWindow, ipcMain: events, Tray, Menu, screen } = require('electron')
 const SerialPort = require('serialport');
-
-const port = new SerialPort('COM3', { baudRate: 9600 });
+const Readline = require('@serialport/parser-readline')
 
 const WIDTH = 364;
 const HEIGHT = 500;
@@ -65,23 +64,49 @@ function createWindow() {
     event.preventDefault();
     win.hide();
   });
+
+  win.webContents.on('did-finish-load', () => {
+    const port = new SerialPort('COM3', { baudRate: 19200 });
+    const parser = port.pipe(new Readline({ delimiter: '\n' }))
+    let portIsOpen = false;
+
+    port.on("open", async () => {
+      await sleep(2000); // Wait to Arduino start
+      portIsOpen = true;
+      win.webContents.send('open-port');
+      console.log('Open port!');
+    });
+    
+    port.on("close", () => {
+      portIsOpen = false;
+      win.webContents.send('close-port');
+      console.log('Open port!');
+    });
+
+    parser.on('data', console.log)
+    
+    events.on('value', (event, rgb) => {
+      if (!portIsOpen) return;
+      console.log(rgb);
+      port.write(JSON.stringify(rgb) + '\n');
+    });
+  })
 }
 
 app.whenReady().then(createWindow);
 
-port.on("open", () => {
-  console.log('Open port!');
-});
 
-ipcMain.on('value', (event, rgb) => {
-  console.log(rgb)
-  port.write(JSON.stringify(rgb) + '\n');
-});
-
+/**
+ * Helpers
+ */
 
 function calculateWindowPosition() {
   const screenBounds = screen.getPrimaryDisplay().size;
   const x = screenBounds.width - WIDTH;
   const y = screenBounds.height - HEIGHT - 40; // Windows 10 taskbar size
   return { x, y };
+}
+
+function sleep(millis) {
+  return new Promise(resolve => setTimeout(resolve, millis));
 }

@@ -19,7 +19,11 @@ colorPicker.color.rgb = JSON.parse(window.localStorage.getItem('value'));
 switchButton.checked = window.localStorage.getItem('switch') == 'on' ? true : false;
 
 if (switchButton.checked) {
-  setTimeout(() => ipcRenderer.send('value', colorPicker.color.rgb), 2000); // FIXME: wait for ready
+  console.log('checked')
+  ipcRenderer.on('open-port', ()  => {
+    console.log('open')
+    ipcRenderer.send('value', colorPicker.color.rgb);
+  });
 }
  
 colorPicker.on('input:change', throttled(100, (color) => {
