@@ -1,6 +1,8 @@
-const { app, BrowserWindow, ipcMain: events, Tray, Menu, screen } = require('electron')
+const { app, BrowserWindow, ipcMain: events, Tray, Menu, screen } = require('electron');
+const moment = require('moment');
+const CronJob = require('cron').CronJob;
 const SerialPort = require('serialport');
-const Readline = require('@serialport/parser-readline')
+const Readline = require('@serialport/parser-readline');
 
 const WIDTH = 364;
 const HEIGHT = 500;
@@ -76,7 +78,7 @@ function createWindow() {
       win.webContents.send('open-port');
       console.log('Open port!');
     });
-    
+
     port.on("close", () => {
       portIsOpen = false;
       win.webContents.send('close-port');
@@ -84,12 +86,19 @@ function createWindow() {
     });
 
     parser.on('data', console.log)
-    
+
     events.on('value', (event, rgb) => {
       if (!portIsOpen) return;
       console.log(rgb);
       port.write(JSON.stringify(rgb) + '\n');
     });
+
+    const job = new CronJob('0 20-23 1/1 * *', () => {
+      if (timeIsBetween('20:00', '23:00')) {
+        console.log('Cron running!');
+        win.webContents.send('turn-on');
+      }
+    }, null, true, 'Europe/Madrid', null, true);
   })
 }
 
@@ -109,4 +118,8 @@ function calculateWindowPosition() {
 
 function sleep(millis) {
   return new Promise(resolve => setTimeout(resolve, millis));
+}
+
+function timeIsBetween(min, max) {
+  return moment().isBetween(moment(min, 'hh:mm'), moment(max, 'hh:mm'), 'm');
 }
