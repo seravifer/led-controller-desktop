@@ -7,38 +7,34 @@ var colorPicker = new iro.ColorPicker('#color-picker', {
   borderWidth: 2
 });
 
-if (!window.localStorage.getItem('value')) {
-  window.localStorage.setItem('value', JSON.stringify(colorPicker.color.rgb))
+if (!window.localStorage.getItem('state')) {
+  window.localStorage.setItem('state', JSON.stringify(colorPicker.color.rgb))
 }
 
-if (!window.localStorage.getItem('switch')) {
-  window.localStorage.setItem('switch', 'off')
+if (!window.localStorage.getItem('power')) {
+  window.localStorage.setItem('power', false)
 }
 
-colorPicker.color.rgb = JSON.parse(window.localStorage.getItem('value'));
-switchButton.checked = window.localStorage.getItem('switch') == 'on' ? true : false;
+colorPicker.color.rgb = JSON.parse(window.localStorage.getItem('state'));
+switchButton.checked = window.localStorage.getItem('power');
 
 if (switchButton.checked) {
-  ipcRenderer.on('open-port', () => {
-    ipcRenderer.send('value', colorPicker.color.rgb);
+  ipcRenderer.on('connected', () => {
+    ipcRenderer.send('change-color', colorPicker.color.rgb);
   });
 }
 
 colorPicker.on('input:change', throttled(100, (color) => {
   if (!switchButton.checked) return;
-  ipcRenderer.send('value', color.rgb);
-  window.localStorage.setItem('value', JSON.stringify(colorPicker.color.rgb));
+  ipcRenderer.send('change', color.rgb);
+  window.localStorage.setItem('state', JSON.stringify(colorPicker.color.rgb));
 }));
 
 switchButton.value = false;
 switchButton.addEventListener('change', () => {
-  if (switchButton.checked) {
-    ipcRenderer.send('value', colorPicker.color.rgb);
-    window.localStorage.setItem('switch', 'on')
-  } else {
-    ipcRenderer.send('value', { r: 0, g: 0, b: 0 });
-    window.localStorage.setItem('switch', 'off')
-  }
+  ipcRenderer.send('power', switchButton.checked);
+  window.localStorage.setItem('power', switchButton.checked)
+
 })
 
 

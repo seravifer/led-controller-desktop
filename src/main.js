@@ -1,8 +1,7 @@
 const { app, BrowserWindow, ipcMain: events, Tray, Menu, screen } = require('electron');
+const { Discovery, Control  } = require('magic-home');
 const moment = require('moment');
 const CronJob = require('cron').CronJob;
-const SerialPort = require('serialport');
-const Readline = require('@serialport/parser-readline');
 
 const WIDTH = 364;
 const HEIGHT = 500;
@@ -56,30 +55,26 @@ function createWindow() {
   });
 
   win.webContents.on('did-finish-load', () => {
-    const port = new SerialPort('COM3', { baudRate: 19200 });
-    const parser = port.pipe(new Readline({ delimiter: '\n' }))
-    let portIsOpen = false;
+    let strip;
 
-    port.on("open", async () => {
-      await sleep(2000); // Wait to Arduino start
-      portIsOpen = true;
-      win.webContents.send('open-port');
-      console.log('Open port!');
+    let discovery = new Discovery();
+    discovery.scan(500).then(async devices => {
+        console.log(devices);
+        strip = new Control("192.168.1.122");
+        const state = await strip.queryState();
+        console.log(state)
+        events.emit('connected');
     });
 
-    port.on("close", () => {
-      portIsOpen = false;
-      win.webContents.send('close-port');
-      console.log('Open port!');
+    events.on('change', (event, rgb) => {
+      if (strip) strip.setColor(rgb.r, rgb.g, rgb.b);
+      console.log('RGB', rgb);
     });
 
-    parser.on('data', console.log)
-
-    events.on('value', (event, rgb) => {
-      if (!portIsOpen) return;
-      console.log(rgb);
-      port.write(JSON.stringify(rgb) + '\n');
-    });
+    events.on('power', (event, power) => {
+      if (strip) strip.setPower(power);
+      console.log('Power', power)
+    })
 
     new CronJob('0 20-23 1/1 * *', () => {
       if (timeIsBetween('20:00', '23:00')) {
@@ -94,7 +89,7 @@ function createWindow() {
         win.hide();
       } else {
         tray.destroy();
-        port.write(JSON.stringify({ r: 0, g: 0, b: 0 }) + '\n');
+        // JSON.stringify({ r: 0, g: 0, b: 0 });
       }
     });
 
@@ -113,10 +108,6 @@ function calculateWindowPosition() {
   const x = screenBounds.width - WIDTH;
   const y = screenBounds.height - HEIGHT - 40; // Windows 10 taskbar size
   return { x, y };
-}
-
-function sleep(millis) {
-  return new Promise(resolve => setTimeout(resolve, millis));
 }
 
 function timeIsBetween(min, max) {

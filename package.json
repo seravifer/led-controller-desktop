@@ -11,14 +11,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^8.0.2",
-    "electron-rebuild": "^1.10.0",
-    "eslint": "^6.8.0"
+    "electron": "^8.3.0",
+    "electron-rebuild": "^1.11.0",
+    "eslint": "^7.0.0"
   },
   "dependencies": {
-    "@jaames/iro": "^5.1.5",
+    "@jaames/iro": "^5.1.8",
     "cron": "^1.8.2",
-    "moment": "^2.24.0",
-    "serialport": "^8.0.7"
+    "magic-home": "^2.4.1",
+    "moment": "^2.25.3"
   }
 }
