@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/seravifer/led-strip-desktop-controller">
-    <img src="assets/icon.png" alt="Logo" width="80" height="80">
+    <img src="public/icon-96x96.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Led Strip Desktop Controller</h3>
@@ -17,10 +17,10 @@
 
 ## About The Project
 <p align="center">
-  <img src="assets/screenshot.png" alt="Screenshot">
+  <img src="public/screenshot.png" alt="Screenshot">
 </p>
 
-## Getting Started
+## Development
 ### Installation
 ```
   $ npm ci
@@ -29,7 +29,14 @@
 
 ### Run
 ```
-  $ npm start
+  $ npm start react
+  $ npm start electron:dev
+```
+
+## Build (only win)
+```
+  $ npm run react:build
+  $ npm run electron:dist
 ```
 
 

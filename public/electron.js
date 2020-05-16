@@ -1,5 +1,7 @@
 const { app, BrowserWindow, ipcMain: events, Tray, Menu, screen } = require('electron');
-const { Discovery, Control  } = require('magic-home');
+const { Discovery, Control } = require('magic-home');
+const path = require('path');
+const url = require('url');
 const moment = require('moment');
 const CronJob = require('cron').CronJob;
 
@@ -20,16 +22,33 @@ function createWindow() {
     }
   })
 
-  win.loadURL('http://localhost:3000');
-  win.webContents.openDevTools({ mode: 'undocked' });
+  win.loadURL(
+    process.env.NODE_ENV === 'development' ? 'http://localhost:3000' :
+      url.format({
+        pathname: path.join(__dirname, '/../public/index.html'),
+        protocol: 'file:',
+        slashes: true
+      })
+  )
+  if (process.env.NODE_ENV === 'development') {
+    win.loadURL('http://localhost:3000');
+    win.webContents.openDevTools({ mode: 'undocked' });
+  } else {
+    win.loadURL(url.format({
+      pathname: path.join(__dirname, '/../build/index.html'),
+      protocol: 'file:',
+      slashes: true
+    }));
+  }
 
   const position = calculateWindowPosition();
   win.setBounds({
     x: position.x,
     y: position.y
   });
-
-  const tray = new Tray("assets/icon.png");
+  
+  const iconPath = path.join(__dirname, 'icon-96x96.png');
+  const tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Quit',
