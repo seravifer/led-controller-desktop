@@ -10,13 +10,11 @@
   border-radius: 4px;
   height: 28px;
   width: 28px;
-  background-color: #86d993;
-  cursor: pointer;
   margin-right: 10px;
+  cursor: pointer;
 }
 
-.preset + .fill {
-  background-color: transparent;
+.add {
   background: linear-gradient(#fff, #fff), linear-gradient(#fff, #fff);
   background-position: center;
   background-size: 50% 2px, 2px 50%; /*thickness = 2px, length = 50% (25px)*/
