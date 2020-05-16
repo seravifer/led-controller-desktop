@@ -6,7 +6,7 @@
   <h3 align="center">Led Strip Desktop Controller</h3>
 
   <p align="center">
-    Control your LED strip from your desktop over USB.
+    Control your LED strip from your desktop over WiFi.
     <br />
     <br />
     <a href="https://github.com/seravifer/led-strip-desktop-controller/issues">Report Bug</a>
@@ -18,9 +18,6 @@
 ## About The Project
 <p align="center">
   <img src="assets/screenshot.png" alt="Screenshot">
-</p>
-<p align="center">
-  <img src="assets/schema.png" alt="Screenshot">
 </p>
 
 ## Getting Started

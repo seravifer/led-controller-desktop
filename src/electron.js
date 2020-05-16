@@ -4,7 +4,7 @@ const moment = require('moment');
 const CronJob = require('cron').CronJob;
 
 const WIDTH = 364;
-const HEIGHT = 500;
+const HEIGHT = 560;
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -20,7 +20,7 @@ function createWindow() {
     }
   })
 
-  win.loadFile('src/index.html');
+  win.loadURL('http://localhost:3000');
   win.webContents.openDevTools({ mode: 'undocked' });
 
   const position = calculateWindowPosition();
@@ -54,7 +54,7 @@ function createWindow() {
     win.hide();
   });
 
-  win.webContents.on('did-finish-load', () => {
+  /*win.webContents.on('did-finish-load', () => {
     let strip;
 
     let discovery = new Discovery();
@@ -66,9 +66,9 @@ function createWindow() {
         events.emit('connected');
     });
 
-    events.on('change', (event, rgb) => {
-      if (strip) strip.setColor(rgb.r, rgb.g, rgb.b);
-      console.log('RGB', rgb);
+    events.on('change', (event, color) => {
+      if (strip) strip.setColorWithBrightness(color.r, color.g, color.b, color.a);
+      console.log('RGBA', color);
     });
 
     events.on('power', (event, power) => {
@@ -93,7 +93,7 @@ function createWindow() {
       }
     });
 
-  })
+  })*/
 }
 
 app.whenReady().then(createWindow);
