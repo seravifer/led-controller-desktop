@@ -1,7 +1,7 @@
 {
-  "name": "led-strip-controller",
+  "name": "led-controller-desktop",
   "version": "1.0.0",
-  "description": "",
+  "description": "Led Controller for Desktop",
   "author": "Sergi Ávila",
   "homepage": "./",
   "main": "public/electron.js",
@@ -21,10 +21,10 @@
     "magic-home": "^2.4.1",
     "moment": "^2.25.3",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "electron": "^8.3.0"
   },
   "devDependencies": {
-    "electron": "^8.3.0",
     "cross-env": "^7.0.2",
     "electron-builder": "^22.6.0",
     "react-scripts": "3.4.1"

@@ -3,10 +3,10 @@
     <img src="public/icon-96x96.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Led Strip Desktop Controller</h3>
+  <h3 align="center">Led Controller for Desktop</h3>
 
   <p align="center">
-    Control your LED strip from your desktop over WiFi.
+    Control your LED strip/bulb from your desktop over WiFi. Support Flux/HomeMagic protocol.
     <br />
     <br />
     <a href="https://github.com/seravifer/led-strip-desktop-controller/issues">Report Bug</a>
@@ -16,6 +16,7 @@
 </p>
 
 ## About The Project
+# Screenshot
 <p align="center">
   <img src="public/screenshot.png" alt="Screenshot">
 </p>
