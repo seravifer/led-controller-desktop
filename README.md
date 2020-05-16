@@ -8,7 +8,7 @@
   <p align="center">
     Control your LED strip/bulb from your desktop over WiFi.
     <br />
-    <i><small>Support Flux/HomeMagic protocol.</small></i>
+    <i>Support Flux/MagicHome protocol.</i>
     <br />
     <br />
     <a href="https://github.com/seravifer/led-strip-desktop-controller/issues">Report Bug</a>

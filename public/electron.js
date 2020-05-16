@@ -73,34 +73,39 @@ function createWindow() {
     win.hide();
   });
 
-  /*win.webContents.on('did-finish-load', () => {
-    let strip;
+  win.webContents.on('did-finish-load', () => {
+    let device;
 
-    let discovery = new Discovery();
-    discovery.scan(500).then(async devices => {
+    events.on('discover', () => {
+      const discovery = new Discovery();
+      discovery.scan(500).then(devices => {
+        events.emit('discover', devices);
         console.log(devices);
-        strip = new Control("192.168.1.122");
-        const state = await strip.queryState();
-        console.log(state)
-        events.emit('connected');
+      });
     });
 
+    events.on('connect', async (device) => {
+      device = new Control(device.address);
+      const state = await device.queryState();
+      events.emit('connect', state);
+    })
+
     events.on('change', (event, color) => {
-      if (strip) strip.setColorWithBrightness(color.r, color.g, color.b, color.a);
+      device.setColorWithBrightness(color.r, color.g, color.b, color.a);
       console.log('RGBA', color);
     });
 
     events.on('power', (event, power) => {
-      if (strip) strip.setPower(power);
+      device.setPower(power);
       console.log('Power', power)
     })
 
-    new CronJob('0 20-23 1/1 * *', () => {
+    /*new CronJob('0 20-23 1/1 * *', () => {
       if (timeIsBetween('20:00', '23:00')) {
         console.log('Cron running!');
         win.webContents.send('turn-on');
       }
-    }, null, true, 'Europe/Madrid', null, true);
+    }, null, true, 'Europe/Madrid', null, true);*/
 
     win.on('close', (event) => {
       if (!app.isQuiting) {
@@ -108,11 +113,10 @@ function createWindow() {
         win.hide();
       } else {
         tray.destroy();
-        // JSON.stringify({ r: 0, g: 0, b: 0 });
       }
     });
 
-  })*/
+  })
 }
 
 app.whenReady().then(createWindow);
