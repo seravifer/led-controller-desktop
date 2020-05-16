@@ -18,35 +18,29 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.recoverFromStorage('power');
-    this.recoverFromStorage('color');
-    this.recoverFromStorage('presets');
+    const state = localStorage.getItem('state');
+    if (!state) {
+      localStorage.setItem('state', JSON.stringify(this.state));
+    } else {
+      this.setState(JSON.parse(state));
+    }
     /*ipcRenderer.on('connected', () => {
       ipcRenderer.send('change-color', colorPicker.color.rgba);
     });*/
   }
 
-  recoverFromStorage = (item) => {
-    if (!window.localStorage.getItem(item)) {
-      window.localStorage.setItem(item, JSON.stringify(this.state[item]));
-    } else {
-      const newState = {};
-      newState[item] = JSON.parse(window.localStorage.getItem(item));
-      this.setState(newState);
-    }
+  saveState() {
+    localStorage.setItem('state', JSON.stringify(this.state));
   }
 
   onColorChange = (color) => {
-    this.setState({ color: color.rgb });
+    this.setState({ color: color.rgb }, this.saveState);
     // ipcRenderer.send('color', color.rgb);
-    window.localStorage.setItem('color', JSON.stringify(color.rgb));
-
   }
 
   onPowerChange = (power) => {
-    this.setState({ power });
+    this.setState({ power }, this.saveState);
     // ipcRenderer.send('power', switchButton.checked);
-    window.localStorage.setItem('power', power);
   }
 
   onSelectPreset = (rgb) => {
@@ -57,15 +51,13 @@ class App extends React.Component {
     const { color, presets } = this.state;
     const exists = presets.some(el => el.r === color.r && el.g === color.g && el.b === color.b);
     if (exists) return;
-    this.setState({ presets: [...presets, color] });
-    window.localStorage.setItem('presets', JSON.stringify([...presets, color]));
+    this.setState({ presets: [...presets, color] }, this.saveState);
   }
 
   onRemovePreset = (index) => {
     const { presets } = this.state;
     presets.splice(index, 1);
-    this.setState({ presets })
-    window.localStorage.setItem('presets', JSON.stringify(presets));
+    this.setState({ presets }, this.saveState);
   }
 
   render() {
