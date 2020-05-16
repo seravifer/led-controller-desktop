@@ -6,7 +6,9 @@
   <h3 align="center">Led Controller for Desktop</h3>
 
   <p align="center">
-    Control your LED strip/bulb from your desktop over WiFi. Support Flux/HomeMagic protocol.
+    Control your LED strip/bulb from your desktop over WiFi.
+    <br />
+    <i><small>Support Flux/HomeMagic protocol.</small</i>
     <br />
     <br />
     <a href="https://github.com/seravifer/led-strip-desktop-controller/issues">Report Bug</a>
@@ -16,7 +18,6 @@
 </p>
 
 ## About The Project
-# Screenshot
 <p align="center">
   <img src="public/screenshot.png" alt="Screenshot">
 </p>
@@ -34,7 +35,7 @@
   $ npm start electron:dev
 ```
 
-## Build (only win)
+### Build (only win)
 ```
   $ npm run react:build
   $ npm run electron:dist
