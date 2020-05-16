@@ -6,7 +6,7 @@
   "homepage": "./",
   "main": "public/electron.js",
   "scripts": {
-    "start": "nf start -p 3000",
+    "start": "npm run react",
     "react": "react-scripts start",
     "react:build": "react-scripts build",
     "electron": "electron .",
@@ -17,9 +17,7 @@
   },
   "dependencies": {
     "@jaames/iro": "^5.1.8",
-    "cron": "^1.8.2",
     "magic-home": "^2.4.1",
-    "moment": "^2.25.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "electron": "^8.3.0"
@@ -33,7 +31,7 @@
     "extends": "react-app"
   },
   "browserslist": [
-    "last 1 chrome version"
+    "last 3 chrome version"
   ],
   "build": {
     "appId": "com.led-strip-controller.app",

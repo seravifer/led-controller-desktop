@@ -2,8 +2,6 @@ const { app, BrowserWindow, ipcMain: events, Tray, Menu, screen } = require('ele
 const { Discovery, Control } = require('magic-home');
 const path = require('path');
 const url = require('url');
-const moment = require('moment');
-const CronJob = require('cron').CronJob;
 
 const WIDTH = 364;
 const HEIGHT = 560;
@@ -100,13 +98,6 @@ function createWindow() {
       console.log('Power', power)
     })
 
-    /*new CronJob('0 20-23 1/1 * *', () => {
-      if (timeIsBetween('20:00', '23:00')) {
-        console.log('Cron running!');
-        win.webContents.send('turn-on');
-      }
-    }, null, true, 'Europe/Madrid', null, true);*/
-
     win.on('close', (event) => {
       if (!app.isQuiting) {
         event.preventDefault();
@@ -131,8 +122,4 @@ function calculateWindowPosition() {
   const x = screenBounds.width - WIDTH;
   const y = screenBounds.height - HEIGHT - 40; // Windows 10 taskbar size
   return { x, y };
-}
-
-function timeIsBetween(min, max) {
-  return moment().isBetween(moment(min, 'hh:mm'), moment(max, 'hh:mm'), 'm');
 }
