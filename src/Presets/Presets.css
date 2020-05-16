@@ -10,8 +10,12 @@
   border-radius: 4px;
   height: 28px;
   width: 28px;
-  margin-right: 10px;
+  margin-right: 12px;
   cursor: pointer;
+}
+
+.presets .preset:nth-child(7) {
+  margin-right: 0;
 }
 
 .add {
@@ -19,4 +23,5 @@
   background-position: center;
   background-size: 50% 2px, 2px 50%; /*thickness = 2px, length = 50% (25px)*/
   background-repeat: no-repeat;
+  margin-right: 0;
 }

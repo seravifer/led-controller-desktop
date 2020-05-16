@@ -1,8 +1,10 @@
 import React from 'react';
 // import { ipcRenderer }  from 'electron';
 import ColorPicker from './ColorPicker/ColorPicker';
+import { ReactComponent as SettingsIcon } from './settings.svg';
 import Toggle from './Toggle/Toggle';
 import Presets from './Presets/Presets';
+import SettingsPage from './SettingsPage/SettingsPage';
 import './style.css';
 
 class App extends React.Component {
@@ -14,7 +16,8 @@ class App extends React.Component {
       g: 255,
       b: 255
     },
-    presets: []
+    presets: [],
+    open: false
   }
 
   componentDidMount() {
@@ -63,7 +66,11 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Toggle value={this.state.power} onChange={(power) => this.onPowerChange(power)} />
+        <SettingsPage open={this.state.open}/>
+        <header>
+          <Toggle value={this.state.power} onChange={(power) => this.onPowerChange(power)} />
+          <SettingsIcon className={"settings-icon" + (this.state.open ? ' open' : '')} height="32px" fill="#d4d4d4" onClick={() => this.setState({ open: !this.state.open })}/>
+        </header>
         <ColorPicker color={this.state.color} onChange={(color) => this.onColorChange(color)} />
         <Presets
           color={this.state.color}

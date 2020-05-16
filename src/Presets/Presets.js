@@ -26,7 +26,7 @@ class Presets extends React.Component {
             onContextMenu={() => this.onRemove(index)}
             style={{ backgroundColor: `rgb(${el.r},${el.g},${el.b})` }} />
         )}
-        <div className="preset add" onClick={this.onAdd}></div>
+        { this.props.presets.length < 7 ? <div className="preset add" onClick={this.onAdd}></div> : null}
       </div>
     )
   }

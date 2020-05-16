@@ -2,4 +2,21 @@ body {
   margin: 0;
   padding: 32px;
   background: #0e101f;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.settings-icon {
+  cursor: pointer;
+  z-index: 5;
+  transition: transform .5s;
+}
+
+.settings-icon.open {
+  transform: rotate(90deg);
 }
