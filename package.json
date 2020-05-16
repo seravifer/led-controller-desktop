@@ -37,7 +37,9 @@
   ],
   "build": {
     "appId": "com.led-strip-controller.app",
+    "productName": "LED Controller",
     "win": {
+      "target": "portable",
       "icon": "build/icon-256x256.png"
     }
   }
