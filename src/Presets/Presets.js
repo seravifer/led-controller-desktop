@@ -1,5 +1,5 @@
 import React from 'react';
-import './Presets.css';
+import './Presets.scss';
 
 class Presets extends React.Component {
 

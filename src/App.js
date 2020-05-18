@@ -5,7 +5,7 @@ import { ReactComponent as SettingsIcon } from './settings.svg';
 import Toggle from './Toggle/Toggle';
 import Presets from './Presets/Presets';
 import SettingsPage from './SettingsPage/SettingsPage';
-import './style.css';
+import './style.scss';
 
 class App extends React.Component {
 

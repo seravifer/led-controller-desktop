@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReactComponent as RemoveIcon } from "./remove.svg";
-import './SettingsPage.css';
+import './SettingsPage.scss';
 
 class SettingsPage extends React.Component {
 
