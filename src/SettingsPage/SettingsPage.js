@@ -1,8 +1,20 @@
 import React from 'react';
 import { ReactComponent as RemoveIcon } from "./remove.svg";
+import ipcRenderer  from '../electron';
 import './SettingsPage.scss';
 
 class SettingsPage extends React.Component {
+
+  state = {
+    devices: []
+  }
+
+  componentDidMount() {
+    ipcRenderer.on('new-device', (event, device) => {
+      console.log(device);
+    });
+    ipcRenderer.send('discover');
+  }
 
   render() {
     return (

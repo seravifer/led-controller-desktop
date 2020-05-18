@@ -1,5 +1,5 @@
 import React from 'react';
-// import { ipcRenderer }  from 'electron';
+// import { ipcRenderer } from './electron';
 import ColorPicker from './ColorPicker/ColorPicker';
 import { ReactComponent as SettingsIcon } from './settings.svg';
 import Toggle from './Toggle/Toggle';
@@ -27,9 +27,6 @@ class App extends React.Component {
     } else {
       this.setState(JSON.parse(state));
     }
-    /*ipcRenderer.on('connected', () => {
-      ipcRenderer.send('change-color', colorPicker.color.rgba);
-    });*/
   }
 
   saveState() {

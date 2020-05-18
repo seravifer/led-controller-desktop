@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain as events, Tray, Menu, screen } from 'electron';
-import { Discovery, Control } from 'magic-home';
 import * as isDev from 'electron-is-dev';
 import * as path from 'path';
+import Devices from './devices';
 
 const WIDTH = 364;
 const HEIGHT = 560;
@@ -16,7 +16,8 @@ function createWindow() {
     frame: false,
     resizable: false,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      preload: path.resolve(__dirname, 'preload.js')
     }
   })
 
@@ -28,7 +29,7 @@ function createWindow() {
     x: position.x,
     y: position.y
   });
-  
+
   const iconPath = path.join(__dirname, '..', 'icon-96x96.png');
   const tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
@@ -55,43 +56,56 @@ function createWindow() {
     win.hide();
   });
 
-  win.webContents.on('did-finish-load', () => {
-    let device;
+  win.on('close', (event) => {
+    if (!app['isQuiting']) {
+      event.preventDefault();
+      win.hide();
+    } else {
+      tray.destroy();
+    }
+  });
 
-    events.on('discover', () => {
-      const discovery = new Discovery();
-      discovery.scan(500).then(devices => {
-        events.emit('discover', devices);
-        console.log(devices);
+
+  /**
+   * App events
+   */
+  let deviceSelected;
+
+  const devices = new Devices();
+
+  events.on('discover', event => {
+    console.log('discover')
+    devices.on('new-device', (device) => {
+      deviceSelected = device;
+      event.reply('new-device', {
+        power: deviceSelected.power,
+        bright: deviceSelected.bright,
+        color: deviceSelected.rgb
       });
-    });
-
-    events.on('connect', async (device: any) => {
-      device = new Control(device.address);
-      const state = await device.queryState();
-      events.emit('connect', state);
     })
+    devices.discover();
+  });
 
-    events.on('change', (event, color) => {
-      device.setColorWithBrightness(color.r, color.g, color.b, color.a);
-      console.log('RGBA', color);
-    });
-
-    events.on('power', (event, power) => {
-      device.setPower(power);
-      console.log('Power', power)
-    })
-
-    win.on('close', (event) => {
-      if (!app['isQuiting']) {
-        event.preventDefault();
-        win.hide();
-      } else {
-        tray.destroy();
-      }
-    });
-
+  events.on('connect', async (event, id) => {
+    deviceSelected = await devices.connectTo(id);
+    await deviceSelected.updateState();
+    event.returnValue = {
+      power: deviceSelected.power,
+      bright: deviceSelected.bright,
+      color: deviceSelected.rgb
+    };
   })
+
+  events.on('change', (event, color) => {
+    deviceSelected.setRGB([color.r, color.g, color.b]);
+    console.log('RGB', color);
+  });
+
+  events.on('power', (event, power) => {
+    deviceSelected.setPower(power);
+    console.log('Power', power)
+  })
+
 }
 
 app.whenReady().then(createWindow);
