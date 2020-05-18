@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "sourceMap": false,
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "outDir": "../build",
+    "rootDir": "../",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  }
+}

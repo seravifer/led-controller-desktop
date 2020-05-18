@@ -1,7 +1,7 @@
-const { app, BrowserWindow, ipcMain: events, Tray, Menu, screen } = require('electron');
-const { Discovery, Control } = require('magic-home');
-const path = require('path');
-const url = require('url');
+import { app, BrowserWindow, ipcMain as events, Tray, Menu, screen } from 'electron';
+import { Discovery, Control } from 'magic-home';
+import * as isDev from 'electron-is-dev';
+import * as path from 'path';
 
 const WIDTH = 364;
 const HEIGHT = 560;
@@ -20,24 +20,8 @@ function createWindow() {
     }
   })
 
-  win.loadURL(
-    process.env.NODE_ENV === 'development' ? 'http://localhost:3000' :
-      url.format({
-        pathname: path.join(__dirname, '/../public/index.html'),
-        protocol: 'file:',
-        slashes: true
-      })
-  )
-  if (process.env.NODE_ENV === 'development') {
-    win.loadURL('http://localhost:3000');
-    win.webContents.openDevTools({ mode: 'undocked' });
-  } else {
-    win.loadURL(url.format({
-      pathname: path.join(__dirname, '/../build/index.html'),
-      protocol: 'file:',
-      slashes: true
-    }));
-  }
+  win.loadURL(isDev ? 'http://localhost:3000/index.html' : path.join(__dirname, '..', 'index.html'))
+  if (isDev) win.webContents.openDevTools({ mode: 'undocked' });
 
   const position = calculateWindowPosition();
   win.setBounds({
@@ -45,13 +29,13 @@ function createWindow() {
     y: position.y
   });
   
-  const iconPath = path.join(__dirname, 'icon-96x96.png');
+  const iconPath = path.join(__dirname, '..', 'icon-96x96.png');
   const tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Quit',
       click: () => {
-        app.isQuiting = true;
+        app['isQuiting'] = true;
         app.quit();
       }
     }
@@ -82,7 +66,7 @@ function createWindow() {
       });
     });
 
-    events.on('connect', async (device) => {
+    events.on('connect', async (device: any) => {
       device = new Control(device.address);
       const state = await device.queryState();
       events.emit('connect', state);
@@ -99,7 +83,7 @@ function createWindow() {
     })
 
     win.on('close', (event) => {
-      if (!app.isQuiting) {
+      if (!app['isQuiting']) {
         event.preventDefault();
         win.hide();
       } else {
