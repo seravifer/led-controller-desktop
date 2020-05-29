@@ -15,8 +15,8 @@ header {
   cursor: pointer;
   z-index: 5;
   transition: transform .5s;
-}
-
-.settings-icon.open {
-  transform: rotate(90deg);
+  
+  &.open {
+    transform: rotate(90deg);
+  }
 }

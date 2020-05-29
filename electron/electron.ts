@@ -78,6 +78,8 @@ function createWindow() {
     devices.on('new-device', (device) => {
       deviceSelected = device;
       event.reply('new-device', {
+        id: deviceSelected.id,
+        name: 'Yeelight',
         power: deviceSelected.power,
         bright: deviceSelected.bright,
         color: deviceSelected.rgb
