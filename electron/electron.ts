@@ -1,7 +1,6 @@
 import { app, BrowserWindow, ipcMain as events, Tray, Menu, screen } from 'electron';
 import * as isDev from 'electron-is-dev';
 import * as path from 'path';
-import Devices from './devices';
 import { Discovery, Control } from 'magic-home';
 
 const WIDTH = 364;
@@ -75,7 +74,7 @@ function createWindow() {
   
   events.on('discover', event => {
 
-    console.log('discover')
+    console.log('Searching...')
     let discovery = new Discovery();
     discovery.scan(500).then(devices => {
       console.log(devices)
@@ -91,22 +90,31 @@ function createWindow() {
   });
 
   events.handle('connect', async (event, device) => {
-    console.log('connecting...')
-    let light = new Control(device.address);
-    console.log('connect')
+    console.log('Connecting...')
+    let light = new Control(device.address, { wait_for_reply: false });
     const state = await light.queryState();
-    devices.push(light);
-    return state;
+    console.log('Connected');
+    devices.push({ ...device, controller: light });
+    return {
+      power: state.on,
+      color: {
+        r: state.color.red,
+        g: state.color.green,
+        b: state.color.blue,
+      }
+    };
   })
 
-  events.on('change', (event, device) => {
+  events.on('color', (event, device) => {
+    console.log('color', device)
     const light = devices.find(d => d.id === device.id);
-    light.setColor(device.color.r, device.color.g, device.color.b);
+    light.controller.setColor(device.state.color.r, device.state.color.g, device.state.color.b)
   });
 
-  events.handle('power', (event, device) => {
+  events.on('power', (event, device) => {
+    console.log('power', device)
     const light = devices.find(d => d.id === device.id);
-    return light.setPower(device.power);
+    light.controller.setPower(device.state.power);
   });
 
 }
