@@ -9,7 +9,7 @@
     "noEmitOnError": true,
     "noImplicitAny": false,
     "outDir": "../build",
-    "rootDir": "../",
+    "rootDir": "./",
     "typeRoots": [
       "node_modules/@types"
     ]
