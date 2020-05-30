@@ -72,7 +72,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        {this.state.open ? <SettingsPage devices={this.state.devices} /> : null}
+        <SettingsPage open={this.state.open} devices={this.state.devices} />
         <header>
           <Toggle value={this.state.selectedDevice?.state?.power} onChange={(power) => this.onPowerChange(power)} />
           <SettingsIcon className={"settings-icon" + (this.state.open ? ' open' : '')} height="32px" fill="#d4d4d4" onClick={() => this.setState({ open: !this.state.open })}/>

@@ -21,7 +21,7 @@ function createWindow() {
     }
   })
 
-  win.loadURL(isDev ? 'http://localhost:3000/index.html' : path.join(__dirname, '..', 'index.html'))
+  win.loadURL(isDev ? 'http://localhost:3000/index.html' : path.join(__dirname, 'index.html'))
   if (isDev) win.webContents.openDevTools({ mode: 'undocked' });
 
   const position = calculateWindowPosition();
@@ -30,7 +30,7 @@ function createWindow() {
     y: position.y
   });
 
-  const iconPath = path.join(__dirname, '..', 'icon-96x96.png');
+  const iconPath = path.join(__dirname, 'icon-96x96.png');
   const tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
     {
