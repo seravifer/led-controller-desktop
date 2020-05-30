@@ -54,7 +54,7 @@ h1 {
   margin-left: 28px;
 }
 
-.device:hover .remove-icon {
+.device:hover .add-icon {
   display: block;
 }
 
@@ -62,15 +62,14 @@ h1 {
   margin-left: 0;
 }
 
-.remove-icon {
+.add-icon {
   height: 16px;
   cursor: pointer;
   fill: #ccc;
   margin-right: 12px;
   display: none;
-}
-
-.remove-icon:hover {
-  cursor: pointer;
-  fill: red;
+  &:hover {
+    cursor: pointer;
+    fill: red;
+  }
 }

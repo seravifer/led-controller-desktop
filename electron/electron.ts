@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain as events, Tray, Menu, screen } from 'elect
 import * as isDev from 'electron-is-dev';
 import * as path from 'path';
 import Devices from './devices';
+import { Discovery, Control } from 'magic-home';
 
 const WIDTH = 364;
 const HEIGHT = 560;
@@ -69,44 +70,44 @@ function createWindow() {
   /**
    * App events
    */
-  let deviceSelected;
+  const devices: any[] = [];
 
-  const devices = new Devices();
-
+  
   events.on('discover', event => {
+
     console.log('discover')
-    devices.on('new-device', (device) => {
-      deviceSelected = device;
-      event.reply('new-device', {
-        id: deviceSelected.id,
-        name: 'Yeelight',
-        power: deviceSelected.power,
-        bright: deviceSelected.bright,
-        color: deviceSelected.rgb
+    let discovery = new Discovery();
+    discovery.scan(500).then(devices => {
+      console.log(devices)
+      devices.forEach(device => {
+        event.reply('new-device', {
+          id: device.id,
+          name: device.model,
+          address: device.address
+        });
       });
-    })
-    devices.discover();
+    });
+
   });
 
-  events.on('connect', async (event, id) => {
-    deviceSelected = await devices.connectTo(id);
-    await deviceSelected.updateState();
-    event.returnValue = {
-      power: deviceSelected.power,
-      bright: deviceSelected.bright,
-      color: deviceSelected.rgb
-    };
+  events.handle('connect', async (event, device) => {
+    console.log('connecting...')
+    let light = new Control(device.address);
+    console.log('connect')
+    const state = await light.queryState();
+    devices.push(light);
+    return state;
   })
 
-  events.on('change', (event, color) => {
-    deviceSelected.setRGB([color.r, color.g, color.b]);
-    console.log('RGB', color);
+  events.on('change', (event, device) => {
+    const light = devices.find(d => d.id === device.id);
+    light.setColor(device.color.r, device.color.g, device.color.b);
   });
 
-  events.on('power', (event, power) => {
-    deviceSelected.setPower(power);
-    console.log('Power', power)
-  })
+  events.handle('power', (event, device) => {
+    const light = devices.find(d => d.id === device.id);
+    return light.setPower(device.power);
+  });
 
 }
 
