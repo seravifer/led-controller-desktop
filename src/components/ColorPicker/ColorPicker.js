@@ -29,9 +29,7 @@ class ColorPicker extends React.Component {
   }
 
   componentDidUpdate() {
-    const { color, ...colorPickerState } = this.props;
-    if (color) this.colorPicker.color.set(color);
-    this.colorPicker.setState(colorPickerState);
+    this.colorPicker.color.set(this.props.color || { r: 255, g: 255, b: 255 });
   }
 
   render() {

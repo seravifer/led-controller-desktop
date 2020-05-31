@@ -109,3 +109,10 @@
 .tgl-skewed:checked + .tgl-btn:active:after {
   left: 10%;
 }
+
+.disabled {
+  cursor: not-allowed;
+  .tgl-btn {
+    pointer-events: none;
+  }
+}
