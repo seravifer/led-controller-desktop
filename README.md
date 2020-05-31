@@ -26,19 +26,20 @@
 ### Installation
 ```
   $ npm ci
-  $ npm run rebuild
 ```
 
 ### Run
 ```
   $ npm start react
+```
+In another window
+```
   $ npm start electron:dev
 ```
 
 ### Build (only win)
 ```
-  $ npm run react:build
-  $ npm run electron:dist
+  $ npm run build
 ```
 
 ## Credit

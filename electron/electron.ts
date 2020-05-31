@@ -116,8 +116,8 @@ app.whenReady().then(createWindow);
  */
 
 function calculateWindowPosition() {
-  const screenBounds = screen.getPrimaryDisplay().size;
-  const x = screenBounds.width - WIDTH;
-  const y = screenBounds.height - HEIGHT - 40; // Windows 10 taskbar size
+  const screenSize = screen.getPrimaryDisplay().workArea;
+  const x = screenSize.width - WIDTH;
+  const y = screenSize.height - HEIGHT;
   return { x, y };
 }
