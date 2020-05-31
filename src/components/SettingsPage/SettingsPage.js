@@ -45,7 +45,7 @@ class SettingsPage extends React.Component {
               <div className="device" key={d.id}>
                 <LedIcon className="icon" />
                 <div className="device-info">
-                  <div className="title">{d.name}<RemoveIcon className="remove-icon" onClick={d => this.remove(d)} /></div>
+                  <div className="title">{d.name}<RemoveIcon className="remove-icon" onClick={() => this.remove(d)} /></div>
                   <div className="model">{d.type}</div>
                 </div>
               </div>
@@ -58,7 +58,7 @@ class SettingsPage extends React.Component {
               <div className="device" key={d.id}>
                 <LedIcon className="icon" />
                 <div className="device-info">
-                  <div className="title">{d.name}<AddIcon className="remove-icon" onClick={d => this.add(d)} /></div>
+                  <div className="title">{d.name}<AddIcon className="remove-icon" onClick={() => this.add(d)} /></div>
                   <div className="model">{d.type}</div>
                 </div>
               </div>
