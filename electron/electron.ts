@@ -1,7 +1,8 @@
 import { app, BrowserWindow, ipcMain as events, Tray, Menu, screen } from 'electron';
 import * as isDev from 'electron-is-dev';
 import * as path from 'path';
-import { Discovery, Control } from 'magic-home';
+import Flux from './flux.device.ts';
+import { Device } from './device.model';
 
 const WIDTH = 364;
 const HEIGHT = 560;
@@ -69,53 +70,41 @@ function createWindow() {
   /**
    * App events
    */
-  const devices: any[] = [];
+  const devices: Device[] = [];
 
   
   events.on('discover', event => {
 
     console.log('Searching...')
-    let discovery = new Discovery();
-    discovery.scan(500).then(devices => {
-      console.log(devices)
+    Flux.discover().then(devices => {
+      console.log('Devices:', devices);
       devices.forEach(device => {
-        event.reply('new-device', {
-          id: device.id,
-          name: device.model,
-          address: device.address
-        });
+        event.reply('new-device', device);
       });
     });
 
-  });
+  })
 
   events.handle('connect', async (event, device) => {
-    console.log('Connecting...')
-    let light = new Control(device.address, { wait_for_reply: false });
-    const state = await light.queryState();
-    console.log('Connected');
-    devices.push({ ...device, controller: light });
-    return {
-      power: state.on,
-      color: {
-        r: state.color.red,
-        g: state.color.green,
-        b: state.color.blue,
-      }
-    };
+    console.log('Connecting...');
+    let light = new Flux();
+    const state = await light.connect(device);
+    console.log(`Connected to ${light.name}`);
+    devices.push(light);
+    return state;
   })
 
   events.on('color', (event, device) => {
     console.log('color', device)
     const light = devices.find(d => d.id === device.id);
-    light.controller.setColor(device.state.color.r, device.state.color.g, device.state.color.b)
-  });
+    light?.setColor(device.state.color);
+  })
 
   events.on('power', (event, device) => {
     console.log('power', device)
     const light = devices.find(d => d.id === device.id);
-    light.controller.setPower(device.state.power);
-  });
+    light?.setPower(device.state.power);
+  })
 
 }
 

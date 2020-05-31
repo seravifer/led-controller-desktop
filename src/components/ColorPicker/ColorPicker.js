@@ -13,11 +13,7 @@ class ColorPicker extends React.Component {
       {
         component: iro.ui.Slider,
         options: { sliderType: 'value' }
-      },
-      /*{
-        component: iro.ui.Slider,
-        options: { sliderType: 'alpha' }
-      }*/
+      }
     ]
   }
 
