@@ -1,7 +1,8 @@
 import React from 'react';
 import { ReactComponent as RemoveIcon } from "./remove.svg";
 import { ReactComponent as AddIcon } from "./add.svg";
-import ipcRenderer  from '../../electron';
+import { ReactComponent as LedIcon } from "./led.svg";
+import ipcRenderer from '../../electron';
 import './SettingsPage.scss';
 
 class SettingsPage extends React.Component {
@@ -16,9 +17,9 @@ class SettingsPage extends React.Component {
     ipcRenderer.removeAllListeners('new-device');
     ipcRenderer.on('new-device', (event, device) => {
       console.log(device);
-      if (this.state.searchDevices.find(d => d.id === device.id)) return;
-      this.setState({ searchDevices: [...this.state.searchDevices, device] });
       this.setState({ searching: false });
+      if (this.state.searchDevices.find(d => d.id === device.id) || this.props.devices.find(d => d.id === device.id)) return;
+      this.setState({ searchDevices: [...this.state.searchDevices, device] });
     });
     ipcRenderer.send('discover');
   }
@@ -41,18 +42,30 @@ class SettingsPage extends React.Component {
           <h1>Devices</h1>
           <div className="list-devices">
             {this.props.devices.map(d =>
-              <div className="device" key={d.id}><RemoveIcon className="action-icon" onClick={() => this.remove(d)}/><span>{d.name}</span></div>
+              <div className="device" key={d.id}>
+                <LedIcon className="icon" />
+                <div className="device-info">
+                  <div className="title">{d.name}<RemoveIcon className="remove-icon" onClick={d => this.remove(d)} /></div>
+                  <div className="model">{d.type}</div>
+                </div>
+              </div>
             )}
           </div>
           <hr />
           <h2>Search</h2>
           <div className="list-devices">
             {this.state.searchDevices.map(d =>
-              <div className="device" key={d.id}><AddIcon className="action-icon" onClick={() => this.add(d)}/><span>{d.name}</span></div>
+              <div className="device" key={d.id}>
+                <LedIcon className="icon" />
+                <div className="device-info">
+                  <div className="title">{d.name}<AddIcon className="remove-icon" onClick={d => this.add(d)} /></div>
+                  <div className="model">{d.type}</div>
+                </div>
+              </div>
             )}
             {this.state.searching ? 'Searching...' : null}
           </div>
-         {!this.state.searching ? <button onClick={() => this.search()}>Search</button> : null}
+          {!this.state.searching ? <button onClick={() => this.search()}>Search</button> : null}
         </div>
       </div>
     )

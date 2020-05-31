@@ -6,12 +6,13 @@ class Flux extends Device {
   id: string;
   name: string;
   address: string;
+  type = 'flux';
 
   private controller: any;
 
   static async discover() {
     let discovery = new Discovery();
-    let devices = await discovery.scan(500);
+    let devices = await discovery.scan(1000);
     devices = devices.map(device => {
       return {
         id: device.id,

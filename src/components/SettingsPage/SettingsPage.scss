@@ -48,16 +48,47 @@ h1 {
   height: 28px;
   font-size: 16px;
   margin-bottom: 12px;
+
+  .icon {
+    height: 32px;
+    width: auto;
+    margin-right: 12px;
+  }
+
+  .device-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title {
+    font-weight: bold;
+    font-size: 16px;
+    display: inline-flex;
+  }
+
+  .model {
+    font-size: 12px;
+  }
+
+  &:hover .remove-icon {
+    display: initial;
+  }
+
+  .remove-icon {
+    height: 16px;
+    cursor: pointer;
+    fill: #ccc;
+    display: none;
+    margin-left: 8px;
+  
+    &:hover {
+      cursor: pointer;
+      fill: red;
+    }
+  }
+  
 }
 
-.action-icon {
-  height: 16px;
-  cursor: pointer;
-  fill: #ccc;
-  margin-right: 12px;
-
-  &:hover {
-    cursor: pointer;
-    fill: red;
-  }
+hr {
+  border-top: 1px solid #f3f3f3;
 }

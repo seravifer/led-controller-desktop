@@ -41,6 +41,9 @@
   $ npm run electron:dist
 ```
 
+## Credit
+
+Icons by <a href="https://www.flaticon.es/autores/flat-icons" title="Flat Icons">Flat Icons</a>
 
 ## License
 
