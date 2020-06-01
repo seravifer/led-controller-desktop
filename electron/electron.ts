@@ -72,9 +72,7 @@ function createWindow() {
    */
   const devices: Device[] = [];
 
-  
   events.on('discover', event => {
-
     console.log('Searching...')
     Flux.discover().then(devices => {
       console.log('Devices:', devices);
@@ -82,7 +80,6 @@ function createWindow() {
         event.reply('new-device', device);
       });
     });
-
   })
 
   events.handle('connect', async (event, device) => {
@@ -105,8 +102,16 @@ function createWindow() {
     const light = devices.find(d => d.id === device.id);
     light?.setPower(device.state.power);
   })
+  
+  app.on("before-quit", (event) => {
+    // devices[0].setPower(false);
+    console.log('Leaving');
+  });
 
 }
+
+const isAlreadyRunning = app.requestSingleInstanceLock();
+if (!isAlreadyRunning) app.quit();
 
 app.whenReady().then(createWindow);
 
