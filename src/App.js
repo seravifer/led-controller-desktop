@@ -5,7 +5,6 @@ import Toggle from './components/Toggle/Toggle';
 import Presets from './components/Presets/Presets';
 import SettingsPage from './components/SettingsPage/SettingsPage';
 import ipcRenderer  from './electron';
-import './style.scss';
 
 class App extends React.Component {
 
@@ -113,11 +112,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <>
         <SettingsPage open={this.state.open} devices={this.state.devices} onAddDevice={(d => this.onAddDevice(d))} onRemoveDevice={(d => this.onRemoveDevice(d))}/>
         <header>
           <Toggle value={this.state.selectedDevice?.state?.power} onChange={(power) => this.onPowerChange(power)} disabled={!this.state.selectedDevice}/>
-          <SettingsIcon className={"settings-icon" + (this.state.open ? ' open' : '')} height="32px" fill="#d4d4d4" onClick={() => this.setState({ open: !this.state.open })}/>
+          <SettingsIcon className={"settings-icon" + (this.state.open ? ' open' : '')} height="32px" onClick={() => this.setState({ open: !this.state.open })}/>
         </header>
         <ColorPicker color={this.state.selectedDevice?.state?.color} onChange={(color) => this.onColorChange(color)} />
         <Presets
@@ -126,7 +125,7 @@ class App extends React.Component {
           onSelectPreset={(color) => this.onSelectPreset(color)}
           onRemovePreset={(index) => this.onRemovePreset(index)}
           onAddPreset={this.onAddPreset} />
-      </div>
+      </>
     );
   }
 }
