@@ -25,10 +25,20 @@ class SettingsPage extends React.Component {
   }
 
   add(device) {
+    device.config = {
+      start: false,
+      end: false
+    };
     this.props.onAddDevice(device);
     const searchDevices = this.state.searchDevices;
     searchDevices.splice(searchDevices.find(d => d.id === device.id), 1);
     this.setState({ searchDevices });
+  }
+
+  changeConfig(device, event) {
+    const config = {};
+    config[event.target.name] = event.target.checked;
+    this.props.onChangeConfig(device, config)
   }
 
   remove(device) {
@@ -42,13 +52,25 @@ class SettingsPage extends React.Component {
           <h1>Devices</h1>
           <div className="list-devices">
             {this.props.devices.map(d =>
-              <div className="device" key={d.id}>
-                <LedIcon className="icon" />
-                <div className="device-info">
-                  <div className="title">{d.name}<RemoveIcon className="remove-icon" onClick={() => this.remove(d)} /></div>
-                  <div className="model">{d.type}</div>
+              <details className="device" key={d.id}>
+                <summary>
+                  <LedIcon className="icon" />
+                  <div className="device-info">
+                    <div className="title">{d.name}<RemoveIcon className="remove-icon" onClick={() => this.remove(d)} /></div>
+                    <div className="model">{d.type}</div>
+                  </div>
+                </summary>
+                <div className="content">
+                  <div className="checkbox">
+                    <input type="checkbox" id="start" name="start" defaultChecked={d.config.start} onChange={(e) => this.changeConfig(d, e)} />
+                    <label htmlFor="start">Turn ON on Start Up</label>
+                  </div>
+                  <div className="checkbox">
+                    <input type="checkbox" id="end" name="end" />
+                    <label htmlFor="end">Turn OFF on Shut Down</label>
+                  </div>
                 </div>
-              </div>
+              </details>
             )}
           </div>
           <hr />

@@ -4,7 +4,7 @@ import ColorPicker from './components/ColorPicker/ColorPicker';
 import Toggle from './components/Toggle/Toggle';
 import Presets from './components/Presets/Presets';
 import SettingsPage from './components/SettingsPage/SettingsPage';
-import ipcRenderer  from './electron';
+import ipcRenderer from './electron';
 
 class App extends React.Component {
 
@@ -31,10 +31,11 @@ class App extends React.Component {
   getDeviceState() {
     if (!this.state.selectedDevice) return;
     ipcRenderer.invoke('connect', this.state.selectedDevice).then(state => {
-      const selectedDevice = {...this.state.devices[0] };
+      const selectedDevice = { ...this.state.devices[0] };
       selectedDevice.state = state;
-      this.setState({ selectedDevice })
+      this.setState({ selectedDevice });
       console.log('Device selected:', selectedDevice);
+      if (this.state.selectedDevice.config.start) this.onPowerChange(true);
     });
   }
 
@@ -65,6 +66,13 @@ class App extends React.Component {
     })
   }
 
+  onChangeConfig(device, config) {
+    const devices = [...this.state.devices];
+    const deviceByID = devices.find(d => d.id === device.id);
+    deviceByID.config = { ...deviceByID.config, ...config };
+    this.setState({ devices }, () => this.saveState());
+  }
+
   saveState() {
     localStorage.setItem('presets', JSON.stringify(this.state.presets));
     localStorage.setItem('devices', JSON.stringify(this.state.devices));
@@ -75,14 +83,14 @@ class App extends React.Component {
    */
 
   onColorChange = (color) => {
-    const selectedDevice = {...this.state.selectedDevice };
+    const selectedDevice = { ...this.state.selectedDevice };
     selectedDevice.state.color = color.rgb;
     this.setState({ selectedDevice });
     ipcRenderer.send('color', selectedDevice);
   }
 
   onPowerChange = (power) => {
-    const selectedDevice = {...this.state.selectedDevice };
+    const selectedDevice = { ...this.state.selectedDevice };
     selectedDevice.state.power = power;
     this.setState({ selectedDevice });
     ipcRenderer.send('power', selectedDevice);
@@ -113,17 +121,23 @@ class App extends React.Component {
   render() {
     return (
       <>
-        <SettingsPage open={this.state.open} devices={this.state.devices} onAddDevice={(d => this.onAddDevice(d))} onRemoveDevice={(d => this.onRemoveDevice(d))}/>
+        <SettingsPage
+          open={this.state.open}
+          devices={this.state.devices}
+          onAddDevice={(d) => this.onAddDevice(d)}
+          onRemoveDevice={(d) => this.onRemoveDevice(d)}
+          onChangeConfig={(d, c) => this.onChangeConfig(d, c)}
+        />
         <header>
-          <Toggle value={this.state.selectedDevice?.state?.power} onChange={(power) => this.onPowerChange(power)} disabled={!this.state.selectedDevice}/>
-          <SettingsIcon className={"settings-icon" + (this.state.open ? ' open' : '')} height="32px" onClick={() => this.setState({ open: !this.state.open })}/>
+          <Toggle value={this.state.selectedDevice?.state?.power} onChange={(s) => this.onPowerChange(s)} disabled={!this.state.selectedDevice} />
+          <SettingsIcon className={"settings-icon" + (this.state.open ? ' open' : '')} height="32px" onClick={() => this.setState({ open: !this.state.open })} />
         </header>
-        <ColorPicker color={this.state.selectedDevice?.state?.color} onChange={(color) => this.onColorChange(color)} />
+        <ColorPicker color={this.state.selectedDevice} onChange={(c) => this.onColorChange(c)} />
         <Presets
           color={this.state.selectedDevice?.state?.color}
           presets={this.state.presets}
-          onSelectPreset={(color) => this.onSelectPreset(color)}
-          onRemovePreset={(index) => this.onRemovePreset(index)}
+          onSelectPreset={(c) => this.onSelectPreset(c)}
+          onRemovePreset={(i) => this.onRemovePreset(i)}
           onAddPreset={this.onAddPreset} />
       </>
     );

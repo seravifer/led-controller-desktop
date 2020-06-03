@@ -25,6 +25,7 @@ class ColorPicker extends React.Component {
   }
 
   componentDidUpdate() {
+    // TODO: bad performance
     this.colorPicker.color.set(this.props.color || { r: 255, g: 255, b: 255 });
   }
 
