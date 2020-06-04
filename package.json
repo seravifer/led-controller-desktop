@@ -19,9 +19,9 @@
     "@jaames/iro": "^5.1.8",
     "electron-is-dev": "^1.2.0",
     "magic-home": "^2.4.1",
-    "node-yeelight-wifi": "^0.1.4",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "yeelight-platform": "^1.0.9"
   },
   "devDependencies": {
     "electron": "^9.0.2",

@@ -1,50 +1,52 @@
-import {ipcMain as events } from 'electron';
-import Flux from './flux.device.ts';
+import { ipcMain as events } from 'electron';
+import Flux from './flux.device';
+import Yeelight from './yeelight.device';
 import { Device } from './device.model';
 
-export default function startDevicesManager(app) {
-  const devices: Device[] = [];
+export default function startDevicesManager(app: any) {
 
-  events.on('discover', event => {
+  const devices: Device[] = []
+  const protocolsSupported = [Flux, Yeelight];
+
+  events.on('discover', async event => {
     console.log('Searching...')
-    Flux.discover().then(devices => {
-      console.log('Devices:', devices);
-      devices.forEach(device => {
-        event.reply('new-device', device);
-      })
-    })
+    const discoveredDevices = (await Promise.all(protocolsSupported.map(p => p.discover()))).flat()
+    console.log('Devices:', discoveredDevices)
+    discoveredDevices.forEach(d => event.reply('new-device', d))
   })
 
   events.handle('connect', async (e, device) => {
     console.log('Connecting...');
-    let light = new Flux();
-    const state = await light.connect(device);
-    console.log(`Connected to ${light.name}`);
+    let light = device.type === 'flux' ? new Flux() : new Yeelight(); // FIXME
+    const state = await light.connect(device)
+    console.log(`Connected to ${light.name}`)
     devices.push(light);
     return state;
   })
 
   events.on('disconnect', (e, device) => {
-    devices.splice(devices.findIndex(d => d.id === device.id), 1);
+    devices.splice(devices.findIndex(d => d.id === device.id), 1)
     console.log('Device disconnected')
   })
 
   events.on('color', (e, device) => {
     console.log('Color', device)
-    const light = devices.find(d => d.id === device.id);
-    light?.setColor(device.state.color);
+    const light = devices.find(d => d.id === device.id)
+    light?.setColor(device.state.color)
   })
 
   events.on('power', (e, device) => {
     console.log('Power', device)
-    const light = devices.find(d => d.id === device.id);
-    light?.setPower(device.state.power);
+    const light = devices.find(d => d.id === device.id)
+    light?.setPower(device.state.power)
   })
-  
+
+  // TODO: update config device
+
   app.on("before-quit", (e) => {
+    console.log('Leaving...')
     devices.forEach(d => {
       if (d.config.end) d.setPower(false)
     })
-    console.log('Leaving...');
   })
 }
