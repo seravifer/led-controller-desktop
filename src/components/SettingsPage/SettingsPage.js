@@ -15,7 +15,7 @@ class SettingsPage extends React.Component {
   search() {
     this.setState({ searching: true });
     ipcRenderer.removeAllListeners('new-device');
-    ipcRenderer.on('new-device', (event, device) => {
+    ipcRenderer.on('new-device', (e, device) => {
       console.log(device);
       this.setState({ searching: false });
       if (this.state.searchDevices.find(d => d.id === device.id) || this.props.devices.find(d => d.id === device.id)) return;
@@ -66,7 +66,7 @@ class SettingsPage extends React.Component {
                     <label htmlFor="start">Turn ON on Start Up</label>
                   </div>
                   <div className="checkbox">
-                    <input type="checkbox" id="end" name="end" />
+                    <input type="checkbox" id="end" name="end" defaultChecked={d.config.end} onChange={(e) => this.changeConfig(d, e)}/>
                     <label htmlFor="end">Turn OFF on Shut Down</label>
                   </div>
                 </div>

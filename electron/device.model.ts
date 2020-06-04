@@ -3,6 +3,7 @@ export interface DeviceInfo {
   name: string;
   address: string;
   type: 'flux';
+  config?: any;
 }
 
 export interface State {
@@ -18,6 +19,7 @@ export abstract class Device {
   id: string;
   name: string;
   address: string;
+  config?: any;
   // @ts-ignore https://github.com/microsoft/TypeScript/issues/34516
   abstract static discovery(): Promise<DeviceInfo>;
   // @ts-ignore

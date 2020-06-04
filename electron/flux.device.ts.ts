@@ -28,6 +28,7 @@ class Flux extends Device {
     this.id = device.id;
     this.name = device.name;
     this.address = device.address;
+    this.config = device.config;
     this.controller = new Control(device.address, { wait_for_reply: false });
     return this.getState();
   }
