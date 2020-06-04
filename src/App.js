@@ -63,7 +63,8 @@ class App extends React.Component {
     devices.splice(devices.find(d => d.id === device.id), 1);
     this.setState({ devices, selectedDevice }, () => {
       this.saveState();
-    })
+      ipcRenderer.send('disconnect', device);
+    });
   }
 
   onChangeConfig(device, config) {

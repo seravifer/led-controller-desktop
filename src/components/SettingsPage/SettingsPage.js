@@ -77,13 +77,15 @@ class SettingsPage extends React.Component {
           <h2>Search</h2>
           <div className="list-devices">
             {this.state.searchDevices.map(d =>
-              <div className="device" key={d.id}>
-                <LedIcon className="icon" />
-                <div className="device-info">
-                  <div className="title">{d.name}<AddIcon className="remove-icon" onClick={() => this.add(d)} /></div>
-                  <div className="model">{d.type}</div>
-                </div>
-              </div>
+              <details className="device not-open" key={d.id}>
+                <summary>
+                  <LedIcon className="icon" />
+                  <div className="device-info">
+                    <div className="title">{d.name}<AddIcon className="remove-icon" onClick={() => this.add(d)} /></div>
+                    <div className="model">{d.type}</div>
+                  </div>
+                </summary>
+              </details>
             )}
             {this.state.searching ? 'Searching...' : null}
           </div>

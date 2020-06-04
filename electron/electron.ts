@@ -82,7 +82,7 @@ function createWindow() {
     });
   })
 
-  events.handle('connect', async (event, device) => {
+  events.handle('connect', async (e, device) => {
     console.log('Connecting...');
     let light = new Flux();
     const state = await light.connect(device);
@@ -91,19 +91,24 @@ function createWindow() {
     return state;
   })
 
-  events.on('color', (event, device) => {
-    console.log('color', device)
+  events.on('disconnect', (e, device) => {
+    devices.splice(devices.findIndex(d => d.id === device.id), 1);
+    console.log('Device disconnected')
+  });
+
+  events.on('color', (e, device) => {
+    console.log('Color', device)
     const light = devices.find(d => d.id === device.id);
     light?.setColor(device.state.color);
   })
 
-  events.on('power', (event, device) => {
-    console.log('power', device)
+  events.on('power', (e, device) => {
+    console.log('Power', device)
     const light = devices.find(d => d.id === device.id);
     light?.setPower(device.state.power);
   })
   
-  app.on("before-quit", (event) => {
+  app.on("before-quit", (e) => {
     // devices[0].setPower(false);
     console.log('Leaving');
   });

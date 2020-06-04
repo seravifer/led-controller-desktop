@@ -126,6 +126,12 @@ h2 {
     transform: rotate(180deg);
   }
 
+  &.not-open {
+    summary:before {
+      display: none;
+    }
+  }
+
   .content {
     padding-left: 40px;
     margin: 14px 0;
