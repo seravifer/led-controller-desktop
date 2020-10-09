@@ -1,7 +1,7 @@
 import { ipcMain as events } from 'electron';
-import Flux from './flux.device';
-import Yeelight from './yeelight.device';
-import { Device } from './device.model';
+import { Device } from './devices/device.model';
+import Flux from './devices/flux.device';
+import Yeelight from './devices/yeelight.device';
 
 export default function startDevicesManager(app: any) {
 

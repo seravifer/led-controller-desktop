@@ -1,6 +1,5 @@
 import { DeviceInfo, State, Device } from './device.model';
-const YeeDiscovery = require('yeelight-platform').Discovery
-const YeeDevice = require('yeelight-platform').Device
+import { Discovery, Device as Control } from 'yeelight-platform'
 
 class Yeelight extends Device {
 
@@ -12,13 +11,14 @@ class Yeelight extends Device {
   private controller: any;
 
   static async discover() {
-    let discovery = new YeeDiscovery();
+    let discovery = new Discovery();
     const lights: any[] = [];
     discovery.on("didDiscoverDevice", l => lights.push(l))
     discovery.listen()
 
     return new Promise((resolve) => {
       setTimeout(() => {
+        console.log(lights)
         const devices = lights.map(e => {
           return {
             id: e.id,
@@ -28,7 +28,7 @@ class Yeelight extends Device {
           }
         })
         resolve(devices as DeviceInfo[])
-      }, 3000);
+      }, 5000);
     });
   }
 
@@ -37,7 +37,7 @@ class Yeelight extends Device {
     this.name = device.name;
     this.address = device.address;
     this.config = device.config;
-    this.controller = new YeeDevice({ host: this.address, port: 55443 })
+    this.controller = new Control({ host: this.address, port: 55443 })
     return new Promise((resolve) => {
       this.controller.connect()
       this.controller.on('connected', () => {
