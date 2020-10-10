@@ -1,13 +1,12 @@
 import { Device } from './../../types';
 import { DeviceService } from './../../services/device.service';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent {
 
   @Input() open = false;
 
@@ -21,8 +20,6 @@ export class SettingsComponent implements OnInit {
     private device: DeviceService
   ) {}
 
-  ngOnInit() {}
-
   onSearch() {
     this.searching = true;
     this.device.discover().subscribe(device => {
@@ -33,7 +30,6 @@ export class SettingsComponent implements OnInit {
   }
 
   onAdd(device: Device) {
-    console.log('Add:', device);
     device.config = {
       start: false,
       end: false

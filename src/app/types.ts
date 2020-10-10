@@ -9,6 +9,11 @@ export interface Device {
   name: string;
   address: string;
   type: string;
-  state?: any;
+  state?: State;
   config?: any;
+}
+
+export interface State {
+  power: boolean;
+  color: Color;
 }

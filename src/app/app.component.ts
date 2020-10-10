@@ -1,10 +1,10 @@
 import { DeviceService } from './services/device.service';
 import { StorageService } from './services/storage.service';
-import { Color, Device } from './types';
+import { Device, State } from './types';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   presets = [];
   devices: Device[];
   selectedDevice: Device;
-  deviceState = {
+  deviceState: State = {
     power: false,
     color: { r: 255, g: 255, b: 255 }
   };
