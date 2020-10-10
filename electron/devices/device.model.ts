@@ -12,7 +12,7 @@ export interface State {
     r: number;
     g: number;
     b: number;
-  }
+  };
 }
 
 export abstract class Device {

@@ -1,0 +1,126 @@
+:host.disabled {
+  cursor: not-allowed;
+  .tgl-btn {
+    pointer-events: none;
+  }
+}
+
+.tgl {
+  display: none;
+  &:after::selection,
+  &:before::selection {
+    background: none;
+  }
+  * {
+    &:after::selection,
+    &:before::selection,
+    &::selection {
+      background: none;
+    }
+  }
+  + .tgl-btn {
+    outline: 0;
+    display: block;
+    width: 4em;
+    height: 2em;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+
+    &::selection {
+      background: none;
+    }
+
+    &:after {
+      position: relative;
+      display: block;
+      content: "";
+      width: 50%;
+      height: 100%;
+      left: 0;
+    }
+
+    &:before {
+      position: relative;
+      display: block;
+      content: "";
+      width: 50%;
+      height: 100%;
+      display: none;
+    }
+  }
+
+  &::selection {
+    background: none;
+  }
+
+  &:checked + .tgl-btn:after {
+    left: 50%;
+  }
+}
+
+.tgl-skewed {
+  + {
+    .tgl-btn {
+      overflow: hidden;
+      transform: skew(-10deg);
+      backface-visibility: hidden;
+      transition: all 0.2s ease;
+      font-family: sans-serif;
+      background: #888;
+
+      &:after {
+        transform: skew(10deg);
+        display: inline-block;
+        transition: all 0.2s ease;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        line-height: 2em;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+        left: 100%;
+        content: attr(data-tg-on);
+      }
+
+      &:before {
+        transform: skew(10deg);
+        display: inline-block;
+        transition: all 0.2s ease;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        line-height: 2em;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+        left: 0;
+        content: attr(data-tg-off);
+      }
+
+      &:active {
+        background: #888;
+        &:before {
+          left: -10%;
+        }
+      }
+    }
+  }
+
+  &:checked + .tgl-btn {
+    background: #86d993;
+
+    &:before {
+      left: -100%;
+    }
+
+    &:after {
+      left: 0;
+    }
+
+    &:active:after {
+      left: 10%;
+    }
+  }
+}

@@ -1,0 +1,45 @@
+<div [class.open]="open" class="settings-page">
+  <div class="settings-wrapper">
+    <h1>Devices</h1>
+    <div class="list-devices">
+
+      <details class="device" *ngFor="let device of devices; trackBy: trackBy">
+        <summary>
+          <img class="icon" src="assets/led.svg">
+          <div class="device-info">
+            <div class="title">{{ device.name }}<img class="remove-icon" src="assets/remove.svg" (click)="onRemove(device)"></div>
+            <div class="model">{{ device.type }}</div>
+          </div>
+        </summary>
+        <div class="content">
+          <div class="checkbox">
+            <input type="checkbox" id="start" name="start" [checked]="device.config.start" (change)="onChangeConfig(device, $event)">
+            <label for="start">Turn ON on Start Up</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="end" name="end" [checked]="device.config.end" (change)="onChangeConfig(device, $event)">
+            <label for="end">Turn OFF on Shut Down</label>
+          </div>
+        </div>
+      </details>
+
+    </div>
+    <hr />
+    <h2>Search</h2>
+    <div class="list-devices">
+
+      <details class="device not-open" *ngFor="let device of searchDevices; trackBy: trackBy">
+        <summary>
+          <img class="icon" src="assets/led.svg">
+          <div class="device-info">
+            <div class="title">{{ device.name }}<img src="assets/add.svg" class="remove-icon" (click)="onAdd(device)"></div>
+            <div class="model">{{ device.type }}</div>
+          </div>
+        </summary>
+      </details>
+      <ng-container *ngIf="searching">Searching...</ng-container>
+      
+    </div>
+    <button *ngIf="!searching" (click)="onSearch()">Search</button>
+  </div>
+</div>

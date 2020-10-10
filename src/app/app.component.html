@@ -1,0 +1,8 @@
+<settings [open]="openSettings" [(devices)]="devices" (devicesChange)="onDevicesChange()"></settings>
+<header>
+  <toggle *ngIf="selectedDevice?.state" [(value)]="deviceState.power" (valueChange)="onPowerChange()"></toggle>
+  <toggle *ngIf="!(selectedDevice?.state)" disabled="true"></toggle>
+  <img class="settings-icon" [class.open]="openSettings" src="assets/settings.svg" height="32px" (click)="openSettings = !openSettings">
+</header>
+<color-picker [(color)]="deviceState.color" (colorChange)="onColorChange()"></color-picker>
+<presets [(presets)]="presets" [(color)]="deviceState.color" (colorChange)="onColorChange()" (presetsChange)="saveState()"></presets>

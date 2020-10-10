@@ -1,0 +1,14 @@
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.settings-icon {
+  cursor: pointer;
+  z-index: 5;
+  transition: transform .5s;
+  
+  &.open {
+    transform: rotate(90deg);
+  }
+}

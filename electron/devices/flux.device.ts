@@ -11,7 +11,7 @@ class Flux extends Device {
   private controller: any;
 
   static async discover() {
-    let discovery = new Discovery();
+    const discovery = new Discovery();
     let devices = await discovery.scan(1000);
     devices = devices.map(device => {
       return {
@@ -35,6 +35,7 @@ class Flux extends Device {
 
   async getState() {
     const state = await this.controller.queryState();
+    console.log(state);
     return {
       power: state.on,
       color: {
@@ -46,6 +47,7 @@ class Flux extends Device {
   }
 
   setColor(color: { r: number, g: number, b: number }) {
+    // TODO: check power
     this.controller.setColor(color.r, color.g, color.b);
   }
 

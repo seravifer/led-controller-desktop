@@ -5,48 +5,49 @@ import Yeelight from './devices/yeelight.device';
 
 export default function startDevicesManager(app: any) {
 
-  const devices: Device[] = []
+  const devices: Device[] = [];
   const protocolsSupported = [Flux, Yeelight];
 
   events.on('discover', async event => {
-    console.log('Searching...')
-    const discoveredDevices = (await Promise.all(protocolsSupported.map(p => p.discover()))).flat()
-    console.log('Devices:', discoveredDevices)
-    discoveredDevices.forEach(d => event.reply('new-device', d))
-  })
+    console.log('Searching...');
+    // @ts-ignore
+    const discoveredDevices = (await Promise.all(protocolsSupported.map(p => p.discover()))).flat();
+    console.log('Devices:', discoveredDevices);
+    discoveredDevices.forEach(d => event.reply('new-device', d));
+  });
 
   events.handle('connect', async (e, device) => {
     console.log('Connecting...');
-    let light = device.type === 'flux' ? new Flux() : new Yeelight(); // FIXME
-    const state = await light.connect(device)
-    console.log(`Connected to ${light.name}`)
+    const light = device.type === 'flux' ? new Flux() : new Yeelight(); // FIXME
+    const state = await light.connect(device);
+    console.log(`Connected to ${light.name}`);
     devices.push(light);
     return state;
-  })
+  });
 
   events.on('disconnect', (e, device) => {
-    devices.splice(devices.findIndex(d => d.id === device.id), 1)
-    console.log('Device disconnected')
-  })
+    devices.splice(devices.findIndex(d => d.id === device.id), 1);
+    console.log('Device disconnected');
+  });
 
   events.on('color', (e, device) => {
-    console.log('Color', device)
-    const light = devices.find(d => d.id === device.id)
-    light?.setColor(device.state.color)
-  })
+    console.log('Color', device);
+    const light = devices.find(d => d.id === device.id);
+    light?.setColor(device.state.color);
+  });
 
   events.on('power', (e, device) => {
-    console.log('Power', device)
-    const light = devices.find(d => d.id === device.id)
-    light?.setPower(device.state.power)
-  })
+    console.log('Power', device);
+    const light = devices.find(d => d.id === device.id);
+    light?.setPower(device.state.power);
+  });
 
   // TODO: update config device
 
-  app.on("before-quit", (e) => {
-    console.log('Leaving...')
+  app.on('before-quit', (e) => {
+    console.log('Leaving...');
     devices.forEach(d => {
-      if (d.config.end) d.setPower(false)
-    })
-  })
+      if (d.config.end) d.setPower(false);
+    });
+  });
 }

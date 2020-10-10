@@ -19,19 +19,19 @@ function createWindow() {
       nodeIntegration: true,
       preload: path.resolve(__dirname, 'preload.js')
     }
-  })
+  });
 
-  win.loadURL(isDev ? 'http://localhost:3000/index.html' : path.join(__dirname, 'index.html'))
-  if (isDev) win.webContents.openDevTools({ mode: 'undocked' })
+  win.loadURL(isDev ? 'http://localhost:4200' : path.resolve(__dirname, 'app', 'index.html'));
+  if (isDev) win.webContents.openDevTools({ mode: 'undocked' });
 
   const position = calculateWindowPosition();
   win.setBounds({
     x: position.x,
     y: position.y
-  })
+  });
 
-  const iconPath = path.join(__dirname, 'icon-96x96.png')
-  const tray = new Tray(iconPath)
+  const iconPath = path.resolve(__dirname, 'assets', 'icon-96x96.png');
+  const tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Open',
@@ -44,39 +44,39 @@ function createWindow() {
         app.quit();
       }
     }
-  ])
+  ]);
 
-  tray.setContextMenu(contextMenu)
-  tray.on("click", () => win.show())
+  tray.setContextMenu(contextMenu);
+  tray.on('click', () => win.show());
 
-  win.on("blur", () => {
+  win.on('blur', () => {
     if (!win.webContents.isDevToolsOpened()) {
-      win.hide()
-    }
-  })
-
-  win.on('minimize', (event) => {
-    event.preventDefault()
-    win.hide()
-  })
-
-  win.on('close', (event) => {
-    if (!app['isQuiting']) {
-      event.preventDefault()
-      win.hide()
-    } else {
-      tray.destroy()
+      win.hide();
     }
   });
 
-  startDevicesManager(app)
+  win.on('minimize', (event) => {
+    event.preventDefault();
+    win.hide();
+  });
+
+  win.on('close', (event) => {
+    if (!app['isQuiting']) {
+      event.preventDefault();
+      win.hide();
+    } else {
+      tray.destroy();
+    }
+  });
+
+  startDevicesManager(app);
 
 }
 
-const isAlreadyRunning = app.requestSingleInstanceLock()
-if (!isAlreadyRunning) app.quit()
+const isAlreadyRunning = app.requestSingleInstanceLock();
+if (!isAlreadyRunning) app.quit();
 
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
 
 
 /**

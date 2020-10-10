@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/seravifer/led-strip-desktop-controller">
-    <img src="public/icon-96x96.png" alt="Logo" width="80" height="80">
+    <img src=".github/icon-96x96.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Led Controller for Desktop</h3>
@@ -19,7 +19,7 @@
 
 ## About The Project
 <p align="center">
-  <img src="public/screenshot.png" alt="Screenshot">
+  <img src=".github/screenshot.png" alt="Screenshot">
 </p>
 
 ## Development

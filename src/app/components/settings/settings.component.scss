@@ -74,8 +74,8 @@ h2 {
       position: absolute;
       top: 16px;
       right: 12px;
-      width: 0; 
-      height: 0; 
+      width: 0;
+      height: 0;
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       border-top: 6px solid rgb(165, 165, 165);
@@ -139,7 +139,7 @@ h2 {
     .checkbox {
       display: inline-flex;
       align-items: center;
-      
+
       & + .checkbox {
         margin-top: 8px;
       }
