@@ -30,7 +30,7 @@
 
 ### Run
 ```
-  $ npm start react
+  $ npm start
 ```
 In another window
 ```
