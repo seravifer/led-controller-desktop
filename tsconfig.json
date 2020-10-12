@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
+    "outDir": "./build",
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
@@ -12,8 +12,8 @@
     "target": "ES6",
     "module": "es2020",
     "lib": [
-      "es2018",
-      "dom"
+      "ESNext",
+      "DOM"
     ]
   }
 }

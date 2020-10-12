@@ -19,7 +19,7 @@ class Flux extends Device {
         name: device.model,
         address: device.address,
         type: 'flux'
-      }
+      };
     });
     return Promise.resolve(devices as DeviceInfo[]);
   }

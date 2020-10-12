@@ -2,7 +2,7 @@ export interface DeviceInfo {
   id: string;
   name: string;
   address: string;
-  type: 'flux';
+  type: string;
   config?: any;
 }
 

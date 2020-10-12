@@ -21,7 +21,7 @@ function createWindow() {
     }
   });
 
-  win.loadURL(isDev ? 'http://localhost:4200' : path.resolve(__dirname, 'app', 'index.html'));
+  win.loadURL(isDev ? 'http://localhost:4200' : path.resolve(__dirname, 'index.html'));
   if (isDev) win.webContents.openDevTools({ mode: 'undocked' });
 
   const position = calculateWindowPosition();

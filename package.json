@@ -56,7 +56,8 @@
     ],
     "win": {
       "target": "portable",
-      "icon": "build/assets/icon-256x256.png"
+      "icon": "build/assets/icon-256x256.png",
+      "artifactName" : "${productName}.${ext}"
     }
   }
 }

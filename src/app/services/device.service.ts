@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Device } from './../types';
 import { IpcRenderer } from 'electron';
-import { IPC } from './electron.token';
+import { IPC } from './electron.service';
 
 @Injectable({ providedIn: 'root' })
 export class DeviceService {
