@@ -13,10 +13,11 @@ export default function startDevicesManager(app: any) {
     // @ts-ignore
     const discoveredDevices = (await Promise.all(protocolsSupported.map(p => p.discover()))).flat();
     console.log('Devices:', discoveredDevices);
-    discoveredDevices.forEach(d => event.reply('new-device', d));
+    discoveredDevices.forEach(d => event.reply('new-device', d)); // TODO: send async events
+    event.reply('new-device', null); // FIXME: add end event
   });
 
-  events.handle('connect', async (e, device) => {
+  events.handle('connect', async (_, device) => {
     console.log('Connecting...');
     const light = device.type === 'flux' ? new Flux() : new Yeelight(); // FIXME
     const state = await light.connect(device);
@@ -25,18 +26,18 @@ export default function startDevicesManager(app: any) {
     return state;
   });
 
-  events.on('disconnect', (e, device) => {
+  events.on('disconnect', (_, device) => {
     devices.splice(devices.findIndex(d => d.id === device.id), 1);
     console.log('Device disconnected');
   });
 
-  events.on('color', (e, device) => {
+  events.on('color', (_, device) => {
     console.log('Color', device);
     const light = devices.find(d => d.id === device.id);
     light?.setColor(device.state.color);
   });
 
-  events.on('power', (e, device) => {
+  events.on('power', (_, device) => {
     console.log('Power', device);
     const light = devices.find(d => d.id === device.id);
     light?.setPower(device.state.power);
@@ -44,7 +45,7 @@ export default function startDevicesManager(app: any) {
 
   // TODO: update config device
 
-  app.on('before-quit', (e) => {
+  app.on('before-quit', () => {
     console.log('Leaving...');
     devices.forEach(d => {
       if (d.config.end) d.setPower(false);

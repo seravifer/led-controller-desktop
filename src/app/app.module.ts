@@ -5,6 +5,7 @@ import { ColorPickerComponent } from './components/color-picker/color-picker.com
 import { PresetsComponent } from './components/presets/presets.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ToggleComponent } from './components/toggle/toggle.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -16,7 +17,8 @@ import { ToggleComponent } from './components/toggle/toggle.component';
     ToggleComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    DragDropModule
   ]
 })
 export class AppModule { }

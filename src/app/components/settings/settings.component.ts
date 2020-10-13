@@ -9,7 +9,6 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class SettingsComponent {
 
   @Input() open = false;
-
   @Input() devices: Device[] = [];
   @Output() devicesChange = new EventEmitter<Device[]>();
 
@@ -18,14 +17,17 @@ export class SettingsComponent {
 
   constructor(
     private device: DeviceService
-  ) {}
+  ) { }
 
   onSearch() {
     this.searching = true;
-    this.device.discover().subscribe(device => {
-      this.searching = false;
-      if (this.searchDevices.find(d => d.id === device.id)) return;
-      this.searchDevices.push(device);
+    this.device.discover().subscribe({
+      next: (device) => {
+        if (this.searchDevices.some(d => d.id === device.id)) return;
+        if (this.devices.some(d => d.id === device.id)) return;
+        this.searchDevices.push(device);
+      },
+      complete: () => this.searching = false
     });
   }
 

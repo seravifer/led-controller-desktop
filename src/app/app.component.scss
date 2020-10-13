@@ -1,3 +1,12 @@
+:host {
+  padding: 32px;
+  background: #0e101f;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
 header {
   display: flex;
   justify-content: space-between;

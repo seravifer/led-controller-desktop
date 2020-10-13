@@ -15,7 +15,8 @@ export class DeviceService {
     return new Observable<Device>(obs => {
       this.ipcRenderer.removeAllListeners('new-device');
       this.ipcRenderer.on('new-device', (_, device) => {
-        obs.next(device);
+        if (device) obs.next(device);
+        else obs.complete();
       });
       this.ipcRenderer.send('discover');
     });

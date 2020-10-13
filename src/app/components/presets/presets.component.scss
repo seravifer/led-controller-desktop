@@ -1,20 +1,45 @@
 :host {
+  display: block;
   width: 100%;
-  display: inline-flex;
   margin-top: 20px;
+}
+
+.presets-wrapper {
+  display: inline-flex;
+  flex-direction: row;
+
+  .preset:nth-child(7) {
+    margin-right: 0;
+  }
+
+  &.cdk-drop-list-dragging .preset {
+    cursor: move !important;
+  }
+
+  &.cdk-drop-list-dragging .preset:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
 }
 
 .preset {
   border: 2px solid #fff;
   border-radius: 4px;
-  height: 28px;
-  width: 28px;
+  height: 32px;
+  width: 32px;
   margin-right: 12px;
   cursor: pointer;
 }
 
-.presets .preset:nth-child(7) {
-  margin-right: 0;
+.cdk-drag-preview {
+  box-sizing: border-box;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .add {

@@ -1,7 +1,15 @@
 <div
-  *ngFor="let p of presets; let i = index"
-  class="preset"
-  (click)="onSelect(p)"
-  (contextmenu)="onRemove(i); $event.preventDefault()"
-  [style.background-color]="'rgb(' + p.r + ',' + p.g + ',' + p.b +')'"></div>
-<div *ngIf="presets?.length < 7" class="preset add" (click)="onAdd()"></div>
+  class="presets-wrapper"
+  cdkDropList
+  cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="onDrop($event)">
+  <div
+    *ngFor="let p of presets; let i = index"
+    cdkDrag
+    [cdkDragStartDelay]="100"
+    class="preset"
+    (click)="onSelect(p)"
+    (contextmenu)="onRemove(i); $event.preventDefault()"
+    [style.background-color]="'rgb(' + p.r + ',' + p.g + ',' + p.b +')'"></div>
+  <div *ngIf="presets?.length < 7" class="preset add" (click)="onAdd()"></div>
+</div>
