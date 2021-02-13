@@ -4,6 +4,8 @@
     "baseUrl": "./",
     "outDir": "./build",
     "sourceMap": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
