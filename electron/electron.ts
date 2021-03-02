@@ -16,7 +16,6 @@ function createWindow() {
     frame: false,
     resizable: false,
     webPreferences: {
-      nodeIntegration: true,
       preload: path.resolve(__dirname, 'preload.js')
     }
   });
