@@ -45,6 +45,7 @@ export default function startDevicesManager(app: any) {
 
   // TODO: update config device
 
+  // FIXME: not working on Windows
   app.on('before-quit', () => {
     console.log('Leaving...');
     devices.forEach(d => {

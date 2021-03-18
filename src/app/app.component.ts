@@ -58,6 +58,7 @@ export class AppComponent implements OnInit {
   onColorChange() {
     if (!this.selectedDevice) return;
     this.device.changeColor(this.selectedDevice);
+    this.deviceState.power = true;
   }
 
   onPowerChange() {
