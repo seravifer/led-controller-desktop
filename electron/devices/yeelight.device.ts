@@ -53,6 +53,11 @@ class Yeelight extends Device {
     });
   }
 
+  async getState(): Promise<State> {
+    // TODO
+    return Promise.resolve({} as State)
+  }
+
   setColor(color: { r: number, g: number, b: number }) {
     this.controller.sendCommand({
       id: -1,

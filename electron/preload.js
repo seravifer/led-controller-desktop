@@ -1,6 +1,6 @@
-const { contextBridge, ipcRenderer } = require("electron")
+import { contextBridge, ipcRenderer } from "electron";
 
-contextBridge.exposeInMainWorld("ipcRenderer", {
+contextBridge.exposeInMainWorld("ipc", {
   send: (channel, data) => {
     ipcRenderer.send(channel, data);
   },
@@ -10,7 +10,6 @@ contextBridge.exposeInMainWorld("ipcRenderer", {
   on: (channel, listener) => {
     const subscription = (event, ...args) => listener(...args);
     ipcRenderer.on(channel, subscription);
-
     return () => {
       ipcRenderer.removeListener(channel, subscription);
     }

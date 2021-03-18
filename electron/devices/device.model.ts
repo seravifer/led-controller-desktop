@@ -24,6 +24,8 @@ export abstract class Device {
   abstract static discovery(): Promise<DeviceInfo>;
   // @ts-ignore
   abstract static connect(): Promise<State>;
+  // @ts-ignore
+  abstract getState(): Promise<State>;
   // abstract getState(): Promise<State>;
   abstract setColor(color: {
     r: number;

@@ -2,6 +2,8 @@ import { DeviceService } from './services/device.service';
 import { StorageService } from './services/storage.service';
 import { Device, State, Color } from './types';
 import { Component, OnInit } from '@angular/core';
+import { from, fromEvent } from 'rxjs';
+import { filter, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app',
@@ -22,7 +24,7 @@ export class AppComponent implements OnInit {
   constructor(
     private storage: StorageService,
     private device: DeviceService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const savedDevices = this.storage.get('devices');
@@ -31,27 +33,41 @@ export class AppComponent implements OnInit {
       this.saveState();
     } else {
       this.devices = savedDevices;
-      this.selectedDevice =  this.devices[0];
-      this.getDeviceState();
+      this.selectedDevice = this.devices[0];
+      this.connect();
     }
+    this.listenFocusEvent();
   }
 
-  getDeviceState() {
+  private listenFocusEvent() {
+    fromEvent(window, 'focus')
+      .pipe(
+        filter(() => this.selectedDevice != null),
+        switchMap(() => from(this.device.getState(this.selectedDevice)))
+      )
+      .subscribe(res => {
+        this.deviceState = res;
+        this.selectedDevice.state = res;
+      })
+  }
+
+  private connect() {
     if (!this.selectedDevice) return;
-    this.device.connect(this.selectedDevice).then(state => {
-      this.deviceState = state;
-      this.selectedDevice.state = this.deviceState;
-      console.log('Device selected:', this.selectedDevice);
-      if (this.selectedDevice.config.start) {
-        this.selectedDevice.state.power = true;
-        this.onPowerChange();
-      }
-    });
+    this.device.connect(this.selectedDevice)
+      .then(state => {
+        this.deviceState = state;
+        this.selectedDevice.state = this.deviceState;
+        console.log('Device selected:', this.selectedDevice);
+        if (this.selectedDevice.config.start) {
+          this.selectedDevice.state.power = true;
+          this.onPowerChange();
+        }
+      });
   }
 
   onDevicesChange() {
     this.selectedDevice = this.devices[0];
-    this.getDeviceState();
+    this.connect();
     this.saveState();
   }
 

@@ -1,38 +1,42 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Device } from './../types';
-import { IPC, IpcRenderer } from './electron.service';
+import { Device, State } from './../types';
+import { IPC, IpcInterface } from './electron.service';
 
 @Injectable({ providedIn: 'root' })
 export class DeviceService {
 
   constructor(
-    @Inject(IPC) private ipcRenderer: IpcRenderer
+    @Inject(IPC) private ipc: IpcInterface
   ) { }
 
   public discover() {
     return new Observable<Device>(obs => {
-      const subscription = this.ipcRenderer.on('new-device', (device) => {
+      const subscription = this.ipc.on<Device>('new-device', (device) => {
         if (device) obs.next(device);
         else {
           subscription();
           obs.complete();
         }
       })
-      this.ipcRenderer.send('discover');
+      this.ipc.send('discover');
     });
   }
 
+  public getState(device: Device) {
+    return this.ipc.invoke<State>('state', device);
+  }
+
   public connect(device: Device) {
-    return this.ipcRenderer.invoke('connect', device);
+    return this.ipc.invoke<State>('connect', device);
   }
 
   public changePower(device: Device) {
-    this.ipcRenderer.send('power', device);
+    this.ipc.send('power', device);
   }
 
   public changeColor(device: Device) {
-    this.ipcRenderer.send('color', device);
+    this.ipc.send('color', device);
   }
 
 }

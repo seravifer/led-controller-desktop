@@ -47,7 +47,6 @@ class Flux extends Device {
   }
 
   setColor(color: { r: number, g: number, b: number }) {
-    // TODO: check power
     this.controller.setColor(color.r, color.g, color.b);
   }
 

@@ -1,20 +1,14 @@
 import { InjectionToken } from '@angular/core';
 
-export interface IpcRenderer {
-  invoke: (channel: string, ...args: any[]) => Promise<any>;
-  on: (channel: string, listener: (event: any, ...args: any[]) => void) => () => void;
-  send:(channel: string, ...args: any[]) => void;
+export interface IpcInterface {
+  invoke<T>(channel: string, ...args: any[]): Promise<T>;
+  on<T>(channel: string, listener: (event: T, ...args: any[]) => void): () => void;
+  send(channel: string, ...args: any[]): void;
 }
 
-export const IPC = new InjectionToken<IpcRenderer>(
+export const IPC = new InjectionToken<IpcInterface>(
   'An abstraction over IPCRenderer on Electron',
   {
-    factory: () => {
-      return (window as any).ipcRenderer ?? {
-        invoke(channel: string, ...args: any[]) { },
-        on(channel: string, listener: (event: any, ...args: any[]) => void) { },
-        send(channel: string, ...args: any[]) { },
-      };
-    },
-  },
+    factory: () => (window as any).ipc
+  }
 );

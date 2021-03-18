@@ -26,6 +26,12 @@ export default function startDevicesManager(app: any) {
     return state;
   });
 
+  events.handle('state', async (_, device) => {
+    const light = devices.find(d => d.id === device.id);
+    const state = await light?.getState()
+    return state;
+  });
+
   events.on('disconnect', (_, device) => {
     devices.splice(devices.findIndex(d => d.id === device.id), 1);
     console.log('Device disconnected');
