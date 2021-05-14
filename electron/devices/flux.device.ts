@@ -1,12 +1,12 @@
 import { Discovery, Control } from 'magic-home';
 import { DeviceInfo, State, Device } from './device.model';
 
-class Flux extends Device {
+export default class Flux extends Device {
 
-  id: string;
-  name: string;
-  address: string;
-  type = 'flux';
+  public id: string;
+  public name: string;
+  public address: string;
+  public type = 'flux';
 
   private controller: any;
 
@@ -55,5 +55,3 @@ class Flux extends Device {
   }
 
 }
-
-export default Flux;

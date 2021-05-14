@@ -1,7 +1,7 @@
 import { app, BrowserWindow, Tray, Menu, screen } from 'electron';
-import startDevicesManager from './control-manager';
-import * as isDev from 'electron-is-dev';
-import * as path from 'path';
+import startDevicesManager from './manager';
+import isDev from 'electron-is-dev';
+import path from 'path';
 
 const WIDTH = 364;
 const HEIGHT = 560;
@@ -68,7 +68,7 @@ function createWindow() {
     }
   });
 
-  startDevicesManager(app);
+  startDevicesManager();
 
 }
 

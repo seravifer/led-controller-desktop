@@ -1,25 +1,21 @@
 import { ipcMain as events } from 'electron';
 import { Device } from './devices/device.model';
 import Flux from './devices/flux.device';
-import Yeelight from './devices/yeelight.device';
 
-export default function startDevicesManager(app: any) {
+export default function startDevicesManager() {
 
   const devices: Device[] = [];
-  const protocolsSupported = [Flux, Yeelight];
 
   events.on('discover', async event => {
     console.log('Searching...');
-    // @ts-ignore
-    const discoveredDevices = (await Promise.all(protocolsSupported.map(p => p.discover()))).flat();
+    const discoveredDevices = await Flux.discover();
     console.log('Devices:', discoveredDevices);
-    discoveredDevices.forEach(d => event.reply('new-device', d)); // TODO: send async events
-    event.reply('new-device', null); // FIXME: add end event
+    discoveredDevices.forEach(d => event.reply('new-device', d));
   });
 
   events.handle('connect', async (_, device) => {
     console.log('Connecting...');
-    const light = device.type === 'flux' ? new Flux() : new Yeelight(); // FIXME
+    const light = new Flux();
     const state = await light.connect(device);
     console.log(`Connected to ${light.name}`);
     devices.push(light);
@@ -28,7 +24,7 @@ export default function startDevicesManager(app: any) {
 
   events.handle('state', async (_, device) => {
     const light = devices.find(d => d.id === device.id);
-    const state = await light?.getState()
+    const state = await light?.getState();
     return state;
   });
 
@@ -49,13 +45,4 @@ export default function startDevicesManager(app: any) {
     light?.setPower(device.state.power);
   });
 
-  // TODO: update config device
-
-  // FIXME: not working on Windows
-  app.on('before-quit', () => {
-    console.log('Leaving...');
-    devices.forEach(d => {
-      if (d.config.end) d.setPower(false);
-    });
-  });
 }
