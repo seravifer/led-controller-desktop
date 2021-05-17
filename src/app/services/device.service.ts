@@ -18,7 +18,7 @@ export class DeviceService {
           subscription();
           obs.complete();
         }
-      })
+      });
       this.ipc.send('discover');
     });
   }

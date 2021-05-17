@@ -13,8 +13,8 @@ import { filter, switchMap } from 'rxjs/operators';
 export class AppComponent implements OnInit {
 
   presets: Color[] = [];
-  devices: Device[];
-  selectedDevice: Device;
+  devices: Device[] = [];
+  selectedDevice: Device | null = null;
   deviceState: State = {
     power: false,
     color: { r: 255, g: 255, b: 255 }
@@ -27,8 +27,8 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const savedDevices = this.storage.get('devices');
-    this.presets = this.storage.get('presets');
+    const savedDevices = this.storage.get<Device[]>('devices');
+    this.presets = this.storage.get<Color[]>('presets');
     if (!savedDevices) {
       this.saveState();
     } else {
@@ -43,11 +43,11 @@ export class AppComponent implements OnInit {
     fromEvent(window, 'focus')
       .pipe(
         filter(() => this.selectedDevice != null),
-        switchMap(() => from(this.device.getState(this.selectedDevice)))
+        switchMap(() => from(this.device.getState(this.selectedDevice!)))
       )
       .subscribe(res => {
         this.deviceState = res;
-        this.selectedDevice.state = res;
+        this.selectedDevice!.state = res;
       })
   }
 
@@ -56,10 +56,10 @@ export class AppComponent implements OnInit {
     this.device.connect(this.selectedDevice)
       .then(state => {
         this.deviceState = state;
-        this.selectedDevice.state = this.deviceState;
+        this.selectedDevice!.state = this.deviceState;
         console.log('Device selected:', this.selectedDevice);
-        if (this.selectedDevice.config.start) {
-          this.selectedDevice.state.power = true;
+        if (this.selectedDevice!.config.start) {
+          this.selectedDevice!.state.power = true;
           this.onPowerChange();
         }
       });

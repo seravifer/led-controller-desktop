@@ -12,9 +12,9 @@ import iro from '@jaames/iro';
 })
 export class ColorPickerComponent implements AfterViewInit, OnChanges {
 
-  @ViewChild('colorPickerEl') colorPickerEl: ElementRef<HTMLElement>;
+  @ViewChild('colorPickerEl') colorPickerEl?: ElementRef<HTMLElement>;
 
-  @Input() color: Color;
+  @Input() color?: Color;
   @Output() colorChange = new EventEmitter<Color>();
 
   private colorPicker: any;

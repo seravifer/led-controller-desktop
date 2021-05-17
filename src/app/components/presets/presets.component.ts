@@ -13,7 +13,7 @@ export class PresetsComponent {
   @Input() presets: Color[] = [];
   @Output() presetsChange = new EventEmitter<Color[]>();
 
-  @Input() color: Color;
+  @Input() color: Color = { r: 255, g: 255, b: 255 };
   @Output() colorChange = new EventEmitter<Color>();
 
   onSelect(preset: Color) {

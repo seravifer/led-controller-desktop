@@ -11,6 +11,7 @@
     "ng": "ng",
     "start": "ng serve",
     "start:hmr": "ng serve --hmr",
+    "watch": "ng build --watch --configuration development",
     "build": "ng build && npm run electron:build && npm run electron:dist",
     "lint": "ng lint",
     "electron:build": "tsc -p electron",
