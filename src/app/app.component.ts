@@ -2,8 +2,7 @@ import { DeviceService } from './services/device.service';
 import { StorageService } from './services/storage.service';
 import { Device, State, Color } from './types';
 import { Component, OnInit } from '@angular/core';
-import { from, fromEvent } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { from, fromEvent, filter, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app',
@@ -12,14 +11,14 @@ import { filter, switchMap } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
 
-  presets: Color[] = [];
-  devices: Device[] = [];
-  selectedDevice: Device | null = null;
-  deviceState: State = {
+  public presets: Color[] = [];
+  public devices: Device[] = [];
+  public selectedDevice: Device | null = null;
+  public deviceState: State = {
     power: false,
     color: { r: 255, g: 255, b: 255 }
   };
-  openSettings = false;
+  public openSettings = false;
 
   constructor(
     private storage: StorageService,
@@ -28,7 +27,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const savedDevices = this.storage.get<Device[]>('devices');
-    this.presets = this.storage.get<Color[]>('presets');
+    this.presets = this.storage.get<Color[]>('presets') || [];
     if (!savedDevices) {
       this.saveState();
     } else {

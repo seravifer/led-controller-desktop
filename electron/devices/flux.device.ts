@@ -3,17 +3,14 @@ import { DeviceInfo, State, Device } from './device.model';
 
 export default class Flux extends Device {
 
-  public id: string;
-  public name: string;
-  public address: string;
   public type = 'flux';
 
   private controller: any;
 
   static async discover() {
     const discovery = new Discovery();
-    let devices = await discovery.scan(1000);
-    devices = devices.map(device => {
+    const results = await discovery.scan(1000);
+    const devices = results.map(device => {
       return {
         id: device.id,
         name: device.model,
