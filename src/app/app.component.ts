@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   public presets: Color[] = [];
   public devices: Device[] = [];
   public selectedDevice: Device | null = null;
+  public isConnected = false;
   public deviceState: State = {
     power: false,
     color: { r: 255, g: 255, b: 255 }
@@ -41,7 +42,7 @@ export class AppComponent implements OnInit {
   private listenFocusEvent() {
     fromEvent(window, 'focus')
       .pipe(
-        filter(() => this.selectedDevice != null),
+        filter(() => this.isConnected),
         switchMap(() => from(this.device.getState(this.selectedDevice!)))
       )
       .subscribe(res => {
@@ -54,6 +55,7 @@ export class AppComponent implements OnInit {
     if (!this.selectedDevice) return;
     this.device.connect(this.selectedDevice)
       .then(state => {
+        this.isConnected = true;
         this.deviceState = state;
         this.selectedDevice!.state = this.deviceState;
         console.log('Device selected:', this.selectedDevice);
@@ -61,6 +63,8 @@ export class AppComponent implements OnInit {
           this.selectedDevice!.state.power = true;
           this.onPowerChange();
         }
+      }).catch(() => {
+        this.isConnected = false;
       });
   }
 
