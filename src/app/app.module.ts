@@ -9,16 +9,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   bootstrap: [AppComponent],
-  declarations: [
-    AppComponent,
-    ColorPickerComponent,
-    PresetsComponent,
-    SettingsComponent,
-    ToggleComponent
-  ],
-  imports: [
-    BrowserModule,
-    DragDropModule
-  ]
+  declarations: [AppComponent, ColorPickerComponent, PresetsComponent, SettingsComponent, ToggleComponent],
+  imports: [BrowserModule, DragDropModule]
 })
-export class AppModule { }
+export class AppModule {}

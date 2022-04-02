@@ -1,6 +1,6 @@
-import { contextBridge, ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer } from 'electron';
 
-contextBridge.exposeInMainWorld("ipc", {
+contextBridge.exposeInMainWorld('ipc', {
   send: (channel, data) => {
     ipcRenderer.send(channel, data);
   },
@@ -12,6 +12,6 @@ contextBridge.exposeInMainWorld("ipc", {
     ipcRenderer.on(channel, subscription);
     return () => {
       ipcRenderer.removeListener(channel, subscription);
-    }
+    };
   }
-})
+});

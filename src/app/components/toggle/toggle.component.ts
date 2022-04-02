@@ -10,7 +10,6 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, HostBi
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToggleComponent {
-
   @Input() value = false;
   @Output() valueChange = new EventEmitter<boolean>();
 
@@ -21,5 +20,4 @@ export class ToggleComponent {
   onChange(event: any) {
     this.valueChange.emit(event.target.checked);
   }
-
 }

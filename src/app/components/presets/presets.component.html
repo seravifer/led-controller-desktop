@@ -1,8 +1,4 @@
-<div
-  class="presets-wrapper"
-  cdkDropList
-  cdkDropListOrientation="horizontal"
-  (cdkDropListDropped)="onDrop($event)">
+<div class="presets-wrapper" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
   <div
     *ngFor="let p of presets; let i = index"
     cdkDrag
@@ -10,6 +6,7 @@
     class="preset"
     (click)="onSelect(p)"
     (contextmenu)="onRemove(i); $event.preventDefault()"
-    [style.background-color]="'rgb(' + p.r + ',' + p.g + ',' + p.b +')'"></div>
+    [style.background-color]="'rgb(' + p.r + ',' + p.g + ',' + p.b + ')'"
+  ></div>
   <div *ngIf="presets.length < 7" class="preset add" (click)="onAdd()"></div>
 </div>

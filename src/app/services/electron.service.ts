@@ -6,9 +6,6 @@ export interface IpcInterface {
   send(channel: string, ...args: any[]): void;
 }
 
-export const IPC = new InjectionToken<IpcInterface>(
-  'An abstraction over IPCRenderer on Electron',
-  {
-    factory: () => (window as any).ipc
-  }
-);
+export const IPC = new InjectionToken<IpcInterface>('An abstraction over IPCRenderer on Electron', {
+  factory: () => (window as any).ipc
+});

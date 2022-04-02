@@ -2,7 +2,6 @@ import { Discovery, Control } from 'magic-home';
 import { DeviceInfo, State, Device } from './device.model';
 
 export default class Flux extends Device {
-
   public type = 'flux';
 
   private controller: any;
@@ -10,7 +9,7 @@ export default class Flux extends Device {
   static async discover() {
     const discovery = new Discovery();
     const results = await discovery.scan(1000);
-    const devices = results.map(device => {
+    const devices = results.map((device) => {
       return {
         id: device.id,
         name: device.model,
@@ -38,17 +37,16 @@ export default class Flux extends Device {
       color: {
         r: state.color.red,
         g: state.color.green,
-        b: state.color.blue,
+        b: state.color.blue
       }
     } as State;
   }
 
-  setColor(color: { r: number, g: number, b: number }) {
+  setColor(color: { r: number; g: number; b: number }) {
     this.controller.setColor(color.r, color.g, color.b);
   }
 
   setPower(power: boolean) {
     this.controller.setPower(power);
   }
-
 }

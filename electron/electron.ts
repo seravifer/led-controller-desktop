@@ -12,6 +12,7 @@ function createWindow() {
     height: HEIGHT,
     show: false,
     alwaysOnTop: true,
+    skipTaskbar: true,
     fullscreenable: false,
     frame: false,
     resizable: false,
@@ -69,14 +70,12 @@ function createWindow() {
   });
 
   startDevicesManager();
-
 }
 
 const isAlreadyRunning = app.requestSingleInstanceLock();
 if (!isAlreadyRunning) app.quit();
 
 app.whenReady().then(createWindow);
-
 
 /**
  * Helpers

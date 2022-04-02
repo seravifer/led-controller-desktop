@@ -5,13 +5,10 @@ import { IPC, IpcInterface } from './electron.service';
 
 @Injectable({ providedIn: 'root' })
 export class DeviceService {
-
-  constructor(
-    @Inject(IPC) private ipc: IpcInterface
-  ) { }
+  constructor(@Inject(IPC) private ipc: IpcInterface) {}
 
   public discover() {
-    return new Observable<Device>(obs => {
+    return new Observable<Device>((obs) => {
       const subscription = this.ipc.on<Device>('new-device', (device) => {
         if (device) obs.next(device);
         else {
@@ -38,5 +35,4 @@ export class DeviceService {
   public changeColor(device: Device) {
     this.ipc.send('color', device);
   }
-
 }

@@ -9,7 +9,6 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PresetsComponent {
-
   @Input() presets: Color[] = [];
   @Output() presetsChange = new EventEmitter<Color[]>();
 
@@ -38,9 +37,8 @@ export class PresetsComponent {
 
   private isColorAdded() {
     const c = this.color;
-    return this.presets.some(p => {
+    return this.presets.some((p) => {
       return c.r === p.r && c.g === p.g && c.b === p.b;
     });
   }
-
 }

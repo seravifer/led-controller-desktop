@@ -1,7 +1,15 @@
 import { Color } from '../../types';
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input,
-  OnChanges, Output, SimpleChanges, ViewChild
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import iro from '@jaames/iro';
 
@@ -11,7 +19,6 @@ import iro from '@jaames/iro';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ColorPickerComponent implements AfterViewInit, OnChanges {
-
   @ViewChild('colorPickerEl') colorPickerEl?: ElementRef<HTMLElement>;
 
   @Input() color?: Color;
@@ -24,7 +31,7 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges {
     borderWidth: 2,
     layout: [
       {
-        component: iro.ui.Wheel,
+        component: iro.ui.Wheel
       },
       {
         component: iro.ui.Slider,
@@ -48,5 +55,4 @@ export class ColorPickerComponent implements AfterViewInit, OnChanges {
       this.colorChange.emit(color.rgb);
     });
   }
-
 }

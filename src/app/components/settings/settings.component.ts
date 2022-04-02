@@ -7,7 +7,6 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent {
-
   @Input() open = false;
   @Input() devices: Device[] = [];
   @Output() devicesChange = new EventEmitter<Device[]>();
@@ -15,19 +14,17 @@ export class SettingsComponent {
   searchDevices: Device[] = [];
   searching = false;
 
-  constructor(
-    private device: DeviceService
-  ) { }
+  constructor(private device: DeviceService) {}
 
   onSearch() {
     this.searching = true;
     this.device.discover().subscribe({
       next: (device) => {
-        if (this.searchDevices.some(d => d.id === device.id)) return;
-        if (this.devices.some(d => d.id === device.id)) return;
+        if (this.searchDevices.some((d) => d.id === device.id)) return;
+        if (this.devices.some((d) => d.id === device.id)) return;
         this.searchDevices.push(device);
       },
-      complete: () => this.searching = false
+      complete: () => (this.searching = false)
     });
   }
 
@@ -36,7 +33,7 @@ export class SettingsComponent {
       start: false,
       end: false
     };
-    const findDevice = this.searchDevices.findIndex(d => d.id === device.id);
+    const findDevice = this.searchDevices.findIndex((d) => d.id === device.id);
     this.searchDevices.splice(findDevice, 1);
     this.devices.push(device);
     this.devicesChange.emit(this.devices);
@@ -48,7 +45,7 @@ export class SettingsComponent {
   }
 
   onRemove(device: Device) {
-    const findDevice = this.devices.findIndex(d => d.id === device.id);
+    const findDevice = this.devices.findIndex((d) => d.id === device.id);
     this.devices.splice(findDevice, 1);
     this.devicesChange.emit(this.devices);
   }
@@ -56,5 +53,4 @@ export class SettingsComponent {
   trackBy(index: number, device: Device) {
     return device.id;
   }
-
 }

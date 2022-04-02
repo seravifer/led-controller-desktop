@@ -10,7 +10,6 @@ import { from, fromEvent, filter, switchMap } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
   public presets: Color[] = [];
   public devices: Device[] = [];
   public selectedDevice: Device | null = null;
@@ -21,10 +20,7 @@ export class AppComponent implements OnInit {
   };
   public openSettings = false;
 
-  constructor(
-    private storage: StorageService,
-    private device: DeviceService
-  ) { }
+  constructor(private storage: StorageService, private device: DeviceService) {}
 
   ngOnInit() {
     const savedDevices = this.storage.get<Device[]>('devices');
@@ -45,16 +41,17 @@ export class AppComponent implements OnInit {
         filter(() => this.isConnected),
         switchMap(() => from(this.device.getState(this.selectedDevice!)))
       )
-      .subscribe(res => {
+      .subscribe((res) => {
         this.deviceState = res;
         this.selectedDevice!.state = res;
-      })
+      });
   }
 
   private connect() {
     if (!this.selectedDevice) return;
-    this.device.connect(this.selectedDevice)
-      .then(state => {
+    this.device
+      .connect(this.selectedDevice)
+      .then((state) => {
         this.isConnected = true;
         this.deviceState = state;
         this.selectedDevice!.state = this.deviceState;
@@ -63,7 +60,8 @@ export class AppComponent implements OnInit {
           this.selectedDevice!.state.power = true;
           this.onPowerChange();
         }
-      }).catch(() => {
+      })
+      .catch(() => {
         this.isConnected = false;
       });
   }
@@ -89,5 +87,4 @@ export class AppComponent implements OnInit {
     this.storage.save('presets', this.presets ?? []);
     this.storage.save('devices', this.devices ?? []);
   }
-
 }

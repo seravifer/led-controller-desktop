@@ -21,16 +21,12 @@ export abstract class Device {
   address: string;
   config?: any;
   // @ts-ignore https://github.com/microsoft/TypeScript/issues/34516
-  abstract static discovery(): Promise<DeviceInfo>;
+  static abstract discovery(): Promise<DeviceInfo>;
   // @ts-ignore
-  abstract static connect(): Promise<State>;
+  static abstract connect(): Promise<State>;
   // @ts-ignore
   abstract getState(): Promise<State>;
   // abstract getState(): Promise<State>;
-  abstract setColor(color: {
-    r: number;
-    g: number;
-    b: number;
-  }): void;
+  abstract setColor(color: { r: number; g: number; b: number }): void;
   abstract setPower(power: boolean): void;
 }
