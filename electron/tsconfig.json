@@ -12,6 +12,8 @@
     "outDir": "../build",
     "rootDir": "./",
     "strictPropertyInitialization": false,
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": [
+      "../node_modules/@types"
+    ]
   }
 }

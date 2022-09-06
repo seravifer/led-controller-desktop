@@ -35,4 +35,17 @@ export class DeviceService {
   public changeColor(device: Device) {
     this.ipc.send('color', device);
   }
+
+  public onShutdown() {
+    return new Observable<void>((obs) => {
+      this.ipc.on<Device>('shutdown', () => {
+        obs.next();
+        obs.complete();
+      });
+    });
+  }
+
+  public confirmShutdown() {
+    this.ipc.send('shutdown');
+  }
 }

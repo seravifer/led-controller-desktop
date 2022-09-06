@@ -1,5 +1,7 @@
 import { app, BrowserWindow, Tray, Menu, screen } from 'electron';
+import ShutdownHandler from '@paymoapp/electron-shutdown-handler';
 import startDevicesManager from './manager';
+import { ipcMain as events } from 'electron';
 import isDev from 'electron-is-dev';
 import path from 'path';
 
@@ -24,6 +26,9 @@ function createWindow() {
   win.loadURL(isDev ? 'http://localhost:4200' : path.resolve(__dirname, 'index.html'));
   if (isDev) win.webContents.openDevTools({ mode: 'undocked' });
 
+  ShutdownHandler.setWindowHandle(win.getNativeWindowHandle());
+  ShutdownHandler.blockShutdown('Turning off leds...');
+
   const position = calculateWindowPosition();
   win.setBounds({
     x: position.x,
@@ -42,6 +47,7 @@ function createWindow() {
       click: () => {
         app['isQuiting'] = true;
         app.quit();
+        ShutdownHandler.releaseShutdown();
       }
     }
   ]);
@@ -67,6 +73,15 @@ function createWindow() {
     } else {
       tray.destroy();
     }
+  });
+
+  ShutdownHandler.on('shutdown', () => {
+    win.webContents.send('shutdown');
+    events.on('shutdown', () => {
+      ShutdownHandler.releaseShutdown();
+      app['isQuiting'] = true;
+      app.quit();
+    });
   });
 
   startDevicesManager();

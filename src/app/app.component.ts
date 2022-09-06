@@ -33,6 +33,7 @@ export class AppComponent implements OnInit {
       this.connect();
     }
     this.listenFocusEvent();
+    this.listenShutdown();
   }
 
   private listenFocusEvent() {
@@ -45,6 +46,17 @@ export class AppComponent implements OnInit {
         this.deviceState = res;
         this.selectedDevice!.state = res;
       });
+  }
+
+  private listenShutdown() {
+    this.device.onShutdown().subscribe(() => {
+      if (!this.selectedDevice) return;
+      if (this.selectedDevice.config.end) {
+        this.deviceState.power = false;
+        this.onPowerChange();
+      }
+      this.device.confirmShutdown();
+    });
   }
 
   private connect() {
